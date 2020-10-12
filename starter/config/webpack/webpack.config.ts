@@ -78,6 +78,9 @@ const common = (env: any) => {
     },
     resolve: {
       extensions: ['.ts', '.js'],
+      alias: {
+        src: path.resolve(process.cwd(), 'src/'),
+      },
       ...resolve,
     },
     module: {
