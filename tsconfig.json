@@ -24,7 +24,12 @@
     "strictFunctionTypes": true,
     "forceConsistentCasingInFileNames": true,
     "removeComments": true,
-    "jsx": "react"
+    "jsx": "react",
+    "paths": {
+      "app/*": ["web/*"],
+      "web/*": ["web/*"],
+      "starter/*": ["starter/*"]
+    }
   },
   "include": [
     "./web/**/*",
