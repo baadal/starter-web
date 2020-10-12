@@ -61,9 +61,9 @@ const common = (env) => {
   };
 
   const entry = isServer ? {
-    index: './web/index.js'
+    index: './web/index.ts'
   } : {
-    client: './web/client.js'
+    client: './web/client.ts'
   };
 
   let config = {
@@ -75,13 +75,13 @@ const common = (env) => {
       publicPath: '/',
     },
     resolve: {
-      extensions: ['.js'],
+      extensions: ['.ts', '.js'],
       ...resolve,
     },
     module: {
       rules: [
         {
-          test: /\.js$/,
+          test: /\.(ts|js)$/,
           use: 'babel-loader',
           exclude: /node_modules/,
         },
