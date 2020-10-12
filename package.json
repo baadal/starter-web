@@ -2,7 +2,7 @@
   "name": "starter-app",
   "version": "0.3.0",
   "description": "React starter kit for building modern Web Apps",
-  "main": "index.js",
+  "private": true,
   "author": "Abhishek Raj <abhi@raj.me>",
   "scripts": {
     "clean": "rm -rf node_modules package-lock.json",
