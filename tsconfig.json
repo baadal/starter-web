@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "outDir": "./build/ts/",
+    "typeRoots": [
+      "./starter/typings",
+      "./node_modules/@types"
+    ],
+    "types": [
+      "node"
+    ],
+    "baseUrl": "./",
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "declaration": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noEmitOnError": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "forceConsistentCasingInFileNames": true,
+    "removeComments": true,
+    "jsx": "react"
+  },
+  "include": [
+    "./web/**/*",
+    "./starter/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "build",
+    "starter/config"
+  ]
+}
