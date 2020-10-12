@@ -7,7 +7,8 @@ module.exports = {
         corejs: { version: 3, proposals: true },
         shippedProposals: true,
       }
-    ]
+    ],
+    "@babel/preset-typescript"
   ],
   plugins: [
     // "@babel/plugin-transform-runtime", // https://github.com/babel/babel/issues/6629#issuecomment-416986687
