@@ -1,0 +1,19 @@
+{
+  "name": "starter-app",
+  "version": "0.3.0",
+  "description": "React starter kit for building modern Web Apps",
+  "main": "index.js",
+  "author": "Abhishek Raj <abhi@raj.me>",
+  "scripts": {
+    "clean": "rm -rf node_modules package-lock.json",
+    "blame": "git log -S",
+    "hist": "git log --oneline | grep -i",
+    "follow": "git log --follow",
+    "check-env": "node -e 'console.log(process.env)' | grep npm"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baadal/starter-app.git"
+  },
+  "license": "MIT"
+}
