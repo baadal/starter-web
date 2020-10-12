@@ -71,6 +71,9 @@ const common: ConfigurationFactory = (env: any) => {
     },
     resolve: {
       extensions: ['.ts', '.js'],
+      alias: {
+        src: path.resolve(process.cwd(), 'src/'),
+      },
     },
     module: {
       rules: [
