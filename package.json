@@ -2,7 +2,7 @@
   "name": "starter-web",
   "version": "0.2.0",
   "description": "React starter kit for building modern Web Apps",
-  "main": "index.js",
+  "private": true,
   "scripts": {
     "clean": "rm -rf node_modules package-lock.json",
     "blame": "git log -S",
