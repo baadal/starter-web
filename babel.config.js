@@ -14,6 +14,7 @@ module.exports = {
         // debug: !isProd && !isServer,
       }
     ],
+    "@babel/preset-react",
     "@babel/preset-typescript"
   ],
   plugins: [

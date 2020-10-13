@@ -81,7 +81,7 @@ const common = (env: any) => {
   const entry: Entry = isServer ? {
     index: './src/index.ts'
   } : {
-    client: './src/client.ts'
+    client: './src/client.tsx'
   };
 
   let config: Configuration = {
@@ -93,7 +93,7 @@ const common = (env: any) => {
       publicPath,
     },
     resolve: {
-      extensions: ['.ts', '.js'],
+      extensions: ['.ts', '.tsx', '.js', '.jsx'],
       alias: {
         src: path.resolve(process.cwd(), 'src/'),
         starter: path.resolve(process.cwd(), 'starter/'),
@@ -103,7 +103,7 @@ const common = (env: any) => {
     module: {
       rules: [
         {
-          test: /\.(ts|js)$/,
+          test: /\.(tsx?|jsx?)$/,
           use: 'babel-loader',
           exclude: /node_modules/,
         },
