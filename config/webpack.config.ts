@@ -2,6 +2,7 @@ import path from 'path';
 import webpack, { Configuration, ConfigurationFactory, Entry, Plugin } from 'webpack';
 import nodeExternals from 'webpack-node-externals';
 import merge from 'webpack-merge';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 
 import dev from './webpack.dev';
 import { checkProd, checkServer } from '../src/utils/env.utils';
@@ -35,6 +36,12 @@ const common: ConfigurationFactory = (env: any) => {
   if (isServer) {
     plugins.push(new webpack.optimize.LimitChunkCountPlugin({
       maxChunks: 1
+    }));
+  } else {
+    plugins.push(new CopyWebpackPlugin({
+      patterns: [
+        { from: 'static' }
+      ]
     }));
   }
 
