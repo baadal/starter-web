@@ -3,6 +3,7 @@ import webpack, { Configuration, ConfigurationFactory, Entry, Plugin } from 'web
 import nodeExternals from 'webpack-node-externals';
 import merge from 'webpack-merge';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 import dev from './webpack.dev';
 import { checkProd, checkServer } from '../src/utils/env.utils';
@@ -42,6 +43,9 @@ const common: ConfigurationFactory = (env: any) => {
       patterns: [
         { from: 'static' }
       ]
+    }));
+    plugins.push(new HtmlWebpackPlugin({
+      template: 'public/index.html',
     }));
   }
 
