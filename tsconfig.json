@@ -29,6 +29,11 @@
     "paths": {
       "app/*": ["web/*"],
       "web/*": ["web/*"],
+      "pages/*": ["web/pages/*"],
+      "routes/*": ["web/routes/*"],
+      "components/*": ["web/components/*"],
+      "model/*": ["web/model/*"],
+      "assets/*": ["web/assets/*"],
       "starter/*": ["starter/*"]
     }
   },

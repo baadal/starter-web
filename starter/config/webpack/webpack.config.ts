@@ -39,6 +39,7 @@ const common = (env: any) => {
   const plugins: WebpackPluginInstance[] = [
     new Dotenv({ path: path.resolve(process.cwd(), `custom/env/.env`) }),
     new webpack.EnvironmentPlugin({
+      npm_package_version: '',
       NODE_ENV: 'development', // use 'development' unless process.env.NODE_ENV is defined
       PLATFORM: '',
     }),
@@ -97,6 +98,11 @@ const common = (env: any) => {
       alias: {
         app: path.resolve(process.cwd(), 'web/'),
         web: path.resolve(process.cwd(), 'web/'),
+        pages: path.resolve(process.cwd(), 'web/pages/'),
+        routes: path.resolve(process.cwd(), 'web/routes/'),
+        components: path.resolve(process.cwd(), 'web/components/'),
+        model: path.resolve(process.cwd(), 'web/model/'),
+        assets: path.resolve(process.cwd(), 'web/assets/'),
         starter: path.resolve(process.cwd(), 'starter/'),
       },
       ...resolve,
