@@ -2,6 +2,7 @@ import path from 'path';
 import webpack, { Configuration, ResolveOptions, Entry, WebpackPluginInstance } from 'webpack';
 import merge from 'webpack-merge';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 // @ts-ignore
 import nodeExternals from 'webpack-node-externals';
@@ -47,6 +48,9 @@ const common = (env: any) => {
       patterns: [
         { from: 'static' }
       ]
+    }));
+    plugins.push(new HtmlWebpackPlugin({
+      template: 'public/index.html',
     }));
   }
 
