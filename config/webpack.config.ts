@@ -34,6 +34,7 @@ const common: ConfigurationFactory = (env: any) => {
   const plugins: Plugin[] = [
     new Dotenv({ path: path.resolve(process.cwd(), `env/.env`) }),
     new webpack.EnvironmentPlugin({
+      npm_package_version: '',
       NODE_ENV: 'development', // use 'development' unless process.env.NODE_ENV is defined
       PLATFORM: '',
     }),
