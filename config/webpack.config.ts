@@ -2,6 +2,8 @@ import path from 'path';
 import webpack, { Configuration, ResolveOptions, Entry, WebpackPluginInstance } from 'webpack';
 import merge from 'webpack-merge';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
+import Dotenv from 'dotenv-webpack';
+import dotenv from 'dotenv';
 
 // @ts-ignore
 import nodeExternals from 'webpack-node-externals';
@@ -11,6 +13,9 @@ import { checkProd, checkServer } from '../src/utils/env.utils';
 
 const isProd = checkProd();
 const isServer = checkServer();
+
+const dotEnvFile = `env/.env.${isProd ? 'prod' : 'dev'}`;
+dotenv.config({ path: path.resolve(process.cwd(), dotEnvFile) });
 
 const common = (env: any) => {
   const buildRoot = 'build';
@@ -32,6 +37,7 @@ const common = (env: any) => {
   }
 
   const plugins: WebpackPluginInstance[] = [
+    new Dotenv({ path: path.resolve(process.cwd(), `env/.env`) }),
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development', // use 'development' unless process.env.NODE_ENV is defined
       PLATFORM: '',
@@ -57,6 +63,9 @@ const common = (env: any) => {
     // devtool = 'source-map';
   }
 
+  const assetsBaseUrl = process.env.ASSETS_BASE_URL || '';
+  const publicPath = `${assetsBaseUrl}/`;
+
   const stats = {
     // timings: false,
     hash: false,
@@ -81,7 +90,7 @@ const common = (env: any) => {
       filename: outputFileName,
       chunkFilename: chunkFilename,
       path: path.resolve(process.cwd(), outFolder),
-      publicPath: '/',
+      publicPath,
     },
     resolve: {
       extensions: ['.ts', '.js'],
