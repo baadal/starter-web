@@ -1,6 +1,7 @@
 import path from 'path';
 import webpack, { Configuration, ResolveOptions, Entry, WebpackPluginInstance } from 'webpack';
 import merge from 'webpack-merge';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 
 // @ts-ignore
 import nodeExternals from 'webpack-node-externals';
@@ -40,6 +41,12 @@ const common = (env: any) => {
   if (isServer) {
     plugins.push(new webpack.optimize.LimitChunkCountPlugin({
       maxChunks: 1
+    }));
+  } else {
+    plugins.push(new CopyWebpackPlugin({
+      patterns: [
+        { from: 'static' }
+      ]
     }));
   }
 
