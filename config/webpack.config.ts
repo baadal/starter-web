@@ -3,12 +3,17 @@ import webpack, { Configuration, ConfigurationFactory, Entry, Plugin } from 'web
 import nodeExternals from 'webpack-node-externals';
 import merge from 'webpack-merge';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
+import Dotenv from 'dotenv-webpack';
+import dotenv from 'dotenv';
 
 import dev from './webpack.dev';
 import { checkProd, checkServer } from '../src/utils/env.utils';
 
 const isProd = checkProd();
 const isServer = checkServer();
+
+const dotEnvFile = `env/.env.${isProd ? 'prod' : 'dev'}`;
+dotenv.config({ path: path.resolve(process.cwd(), dotEnvFile) });
 
 const common: ConfigurationFactory = (env: any) => {
   const buildRoot = 'build';
@@ -27,6 +32,7 @@ const common: ConfigurationFactory = (env: any) => {
   }
 
   const plugins: Plugin[] = [
+    new Dotenv({ path: path.resolve(process.cwd(), `env/.env`) }),
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development', // use 'development' unless process.env.NODE_ENV is defined
       PLATFORM: '',
@@ -74,7 +80,7 @@ const common: ConfigurationFactory = (env: any) => {
       filename: outputFileName,
       chunkFilename: chunkFilename,
       path: path.resolve(process.cwd(), outFolder),
-      publicPath: '/',
+      publicPath: (process.env.ASSETS_BASE_URL || '') + '/',
     },
     resolve: {
       extensions: ['.ts', '.js'],

@@ -1,10 +1,11 @@
 import express from 'express';
 
+import env from 'src/const/env.values';
 import { checkProd } from 'src/utils/env.utils';
 import { template } from './template';
 
 const app = express();
-const PORT = 3000;
+const PORT = env.port || 3000;
 
 const isProd = checkProd();
 
