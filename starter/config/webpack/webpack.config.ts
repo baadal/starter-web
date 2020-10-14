@@ -24,6 +24,8 @@ const common = (env: any) => {
   const outputFileName = '[name].js';
   const chunkFilename = '[name].chunk.js';
 
+  const assetName = '[name][ext]';
+
   const envConfig: Configuration = {};
 
   if (isServer) {
@@ -107,6 +109,14 @@ const common = (env: any) => {
           test: /\.(tsx?|jsx?)$/,
           use: 'babel-loader',
           exclude: /node_modules/,
+        },
+        {
+          test: /\.(png|jpe?g|gif|svg|ico)$/i,
+          type: 'asset/resource',
+          generator: {
+            filename: `images/${assetName}`,
+            emit: !isServer,
+          },
         },
       ]
     },
