@@ -25,6 +25,7 @@
     "css-lint:fix": "npm run css-lint -- --fix",
     "clean": "npx rimraf build node_modules/.cache",
     "clean:all": "npx rimraf build node_modules package-lock.json",
+    "pre-commit": "lint-staged",
     "blame": "git log -S",
     "hist": "git log --oneline | grep -i",
     "follow": "git log --follow",
@@ -73,7 +74,9 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "husky": "^6.0.0",
     "ignore-emit-webpack-plugin": "^2.0.6",
+    "lint-staged": "^11.0.0",
     "mini-css-extract-plugin": "^1.6.2",
     "node-sass": "^6.0.1",
     "nodemon": "^2.0.8",
@@ -119,5 +122,9 @@
   ],
   "sideEffects": [
     "./sticky_modules/**"
-  ]
+  ],
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint --fix",
+    "*.{css,scss}": "stylelint --fix"
+  }
 }
