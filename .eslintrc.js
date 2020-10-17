@@ -35,5 +35,28 @@ module.exports = {
   ],
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/no-empty-interface": 0,
+    "@typescript-eslint/explicit-function-return-type": 0,
+    "@typescript-eslint/explicit-module-boundary-types": 0,
+    "@typescript-eslint/no-var-requires": 0,
+    "@typescript-eslint/lines-between-class-members": 0,
+    "@typescript-eslint/ban-types": 0,
+    "@typescript-eslint/ban-ts-comment": 0,
+    "react/prop-types": 0,
+    "react/prefer-stateless-function": 0,
+    "react/jsx-props-no-spreading": 0,
+    "react/destructuring-assignment": 0,
+    "react/no-danger": 0,
+    "no-console": 0,
+    "prefer-template": 0,
+    "global-require": 0,
+    "import/prefer-default-export": 0,
+    "no-param-reassign": 0,
+    "no-underscore-dangle": 0,
+    "no-empty-function": "off",
+    "@typescript-eslint/no-empty-function": ["error"],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
   }
 };
