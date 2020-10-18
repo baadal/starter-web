@@ -50,7 +50,6 @@
     "browserslist": "^4.14.7",
     "copy-webpack-plugin": "^6.3.0",
     "cross-env": "^7.0.3",
-    "html-webpack-plugin": "^4.5.0",
     "nodemon": "^2.0.6",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
