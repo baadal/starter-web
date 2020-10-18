@@ -1,7 +1,7 @@
 import express from 'express';
-import fs from 'fs';
 
 import { checkProd } from 'starter/utils/env';
+import { template } from 'starter/ssr/template';
 
 const app = express();
 const PORT = 3000;
@@ -32,12 +32,8 @@ app.use((req, res, next) => {
 app.use(express.static('build/public'));
 
 app.get('/*', (req, res) => {
-  const filePath = process.cwd() + `/build/public/index.html`;
-  if (fs.existsSync(filePath)) {
-    res.sendFile(filePath);
-  } else {
-    res.send('Please refresh!');
-  }
+  const response = template();
+  res.send(response);
 });
 
 app.listen(PORT, () => {
