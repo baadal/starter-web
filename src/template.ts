@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+export const template = () => {
+  const page = `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,5 +8,9 @@
   </head>
   <body>
     <h2>My Web App</h2>
+    <script src="/client.js"></script>
   </body>
-</html>
+</html>`;
+
+  return page;
+};

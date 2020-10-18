@@ -49,7 +49,6 @@
     "browserslist": "^4.16.6",
     "copy-webpack-plugin": "^9.0.1",
     "cross-env": "^7.0.3",
-    "html-webpack-plugin": "^5.3.1",
     "nodemon": "^2.0.8",
     "npm-check-updates": "^11.7.1",
     "npm-run-all": "^4.1.5",
