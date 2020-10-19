@@ -2,8 +2,7 @@ import express from 'express';
 
 import env from 'src/const/env.values';
 import { checkProd } from 'starter/env';
-import { serverRender } from './server';
-import { template } from './template';
+import allRoutes from 'src/ssr/all-routes';
 
 const app = express();
 const PORT = env.port || 3000;
@@ -33,12 +32,7 @@ app.use((req, res, next) => {
 // serve static assets
 app.use(express.static('build/public'));
 
-app.get('/*', (req, res) => {
-  const initialData = {};
-  const { content } = serverRender(req.url, initialData);
-  const response = template(content);
-  res.send(response);
-});
+allRoutes(app);
 
 app.listen(PORT, () => {
   console.log(`\nApp running at port ${PORT} 😎\n`);
