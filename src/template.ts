@@ -1,7 +1,7 @@
 import env from 'src/const/env.values';
 import { checkProd } from 'src/utils/env.utils';
 
-export const template = () => {
+export const template = (content: string) => {
   const isProd = checkProd();
 
   const styleTags = isProd ? `<link rel="stylesheet" href="${env.assetsBaseUrl}/assets/css/style.css">` : '';
@@ -15,7 +15,7 @@ export const template = () => {
     <title>My App</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">${content}</div>
     <script src="${env.assetsBaseUrl}/client.js"></script>
   </body>
 </html>`;
