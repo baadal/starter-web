@@ -1,7 +1,7 @@
 import env from 'starter/const/env.values';
 import { checkProd } from 'starter/utils/env';
 
-export const template = (content: string) => {
+export const template = (content: string, _initialData: any) => {
   const isProd = checkProd();
   const publicPath = `${env.assetsBaseUrl || ''}/`;
 
