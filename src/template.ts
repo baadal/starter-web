@@ -1,7 +1,7 @@
 import env from 'src/const/env.values';
 import { checkProd } from 'src/utils/env.utils';
 
-export const template = () => {
+export const template = (content: string) => {
   const isProd = checkProd();
   const publicPath = `${env.assetsBaseUrl || ''}/`;
 
@@ -16,7 +16,7 @@ export const template = () => {
     <title>My App</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">${content}</div>
     <script src="${publicPath}client.js"></script>
   </body>
 </html>`;
