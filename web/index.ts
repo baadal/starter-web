@@ -2,6 +2,7 @@ import express from 'express';
 
 import env from 'starter/const/env.values';
 import { checkProd } from 'starter/utils/env';
+import { serverRender } from 'starter/ssr/server';
 import { template } from 'starter/ssr/template';
 
 const app = express();
@@ -33,7 +34,9 @@ app.use((req, res, next) => {
 app.use(express.static('build/public'));
 
 app.get('/*', (req, res) => {
-  const response = template();
+  const initialData = {};
+  const { content } = serverRender(req.url, initialData);
+  const response = template(content);
   res.send(response);
 });
 
