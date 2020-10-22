@@ -1,8 +1,14 @@
 import express from 'express';
 
+// @ts-ignore
+import XMLHttpRequest from 'xhr2';
+
 import env from 'starter/const/env.values';
 import { checkProd } from 'starter/utils/env';
 import allRoutes from 'starter/ssr/all-routes';
+
+// support for XMLHttpRequest on node
+(global as any).XMLHttpRequest = XMLHttpRequest;
 
 const app = express();
 const PORT = env.port || 3000;
