@@ -1,9 +1,18 @@
 import React from 'react';
 
+import HttpClient from 'src/core/services/http-client';
+import env from 'src/const/env.values';
+
 import common from 'src/assets/css/common.module.scss';
 import image from 'src/assets/images/logo.png';
 
 class About extends React.Component<any> {
+  componentDidMount() {
+    HttpClient.get(`${env.apiBaseUrl}/v1/data/about`).subscribe(resp => {
+      console.log(resp);
+    });
+  }
+
   render() {
     return (
       <>
