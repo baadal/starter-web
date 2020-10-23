@@ -2,11 +2,12 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 
+import { InitialData } from 'src/core/models/response.model';
 import App from './app';
 
-export const serverRender = (url: string, initialData: any) => {
+export const serverRender = (url: string, initialData: InitialData | null) => {
   const content = ReactDOMServer.renderToString(
-    <StaticRouter location={url} context={initialData}>
+    <StaticRouter location={url} context={initialData as any}>
       <App />
     </StaticRouter>
   );
