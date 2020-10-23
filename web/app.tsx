@@ -1,13 +1,31 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
+import { UnregisterCallback } from 'history'; // eslint-disable-line
 
 import { routesProvider } from 'starter/core/routes/routes.provider';
 import Header from 'components/layouts/header/header.component';
 import Footer from 'components/layouts/footer/footer.component';
+import { PropsRoot } from 'model/common.model';
 
 import 'assets/css/global.scss';
 
-class App extends React.Component<any> {
+class App extends React.Component<AppProps, AppState> {
+  private unregisterCallback: UnregisterCallback | null = null;
+
+  componentDidMount() {
+    this.unregisterCallback = this.props.history.listen(location => {
+      if (location.pathname !== this.props.location.pathname) {
+        if ((window as any).__initialData__) {
+          delete (window as any).__initialData__;
+        }
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    if (this.unregisterCallback) this.unregisterCallback();
+  }
+
   render() {
     const routes = routesProvider();
 
@@ -30,4 +48,8 @@ class App extends React.Component<any> {
   }
 }
 
-export default App;
+export interface AppProps extends PropsRoot {}
+
+export interface AppState {}
+
+export default withRouter(App);
