@@ -2,16 +2,42 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import routes from 'src/core/routes/routes';
+import { extractInitialData } from 'src/core/services/common.service';
+import { getInitialData } from 'src/core/services/pages.service';
 import { PropsRoot } from 'src/core/models/common.model';
+import { HomePageData } from 'src/core/models/response.model';
 
 import styles from 'src/assets/css/common.module.scss';
 
 class Home extends React.Component<HomeProps, HomeState> {
+  constructor(props: HomeProps) {
+    super(props);
+
+    const initialData = extractInitialData(this.props);
+    if (initialData) {
+      const { pageData } = initialData;
+      this.state = { pageData };
+    }
+  }
+
+  componentDidMount() {
+    getInitialData<HomePageData>(this.props.location.pathname).subscribe(initialData => {
+      if (initialData) {
+        const { pageData } = initialData;
+        this.setState({ pageData });
+      }
+    });
+  }
+
   render() {
+    const pageData = this.state?.pageData || null;
+    const title = pageData?.title || '';
+    const description = pageData?.description || '';
+
     return (
       <>
-        <h2 className={styles.heroText}>My Web App</h2>
-        <p>The modern way!</p>
+        <h2 className={styles.heroText}>{title}</h2>
+        <p>{description}</p>
         <ul>
           <li>
             <Link to={routes.cssStylesDemo.path}>Demo: CSS Styles</Link>
@@ -32,4 +58,6 @@ export default Home;
 
 export interface HomeProps extends PropsRoot {}
 
-export interface HomeState {}
+export interface HomeState {
+  pageData: HomePageData | null;
+}
