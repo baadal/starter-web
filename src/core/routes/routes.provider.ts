@@ -1,3 +1,5 @@
+import { matchPath } from 'react-router-dom';
+
 import { Route, RouteData } from 'src/core/models/route.model';
 import routes from './routes';
 
@@ -24,6 +26,22 @@ export const getRoute = (routeData: RouteData): Route => ({
   component: routeData.component,
   source: routeData.source || '',
 });
+
+export const findRouteData = (pathname: string) => {
+  const routeData = routesData.find(data => {
+    const match = matchPath(pathname, data.path);
+    return !!match?.isExact;
+  });
+  return routeData;
+};
+
+export const findRoute = (pathname: string) => {
+  const routeData = findRouteData(pathname);
+  if (routeData) {
+    return getRoute(routeData);
+  }
+  return null;
+};
 
 export const routesProvider = () => {
   return routesData.map(data => getRoute(data));
