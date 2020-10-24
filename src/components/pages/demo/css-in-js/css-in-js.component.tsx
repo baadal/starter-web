@@ -2,6 +2,8 @@ import React from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
+import { CssInJsDemoData } from 'src/core/models/response.model';
+
 const StyledDiv = styled.div<any>`
   color: ${props => (props.primary ? 'darkorchid' : 'green')};
   &:hover {
@@ -49,11 +51,14 @@ const StyledComponent = styled(StyledDiv)`
   }
 `;
 
-class CssInJsDemo extends React.Component<any, any> {
+class CssInJsDemo extends React.Component<CssInJsDemoProps, CssInJsDemoState> {
   render() {
+    const { pageData } = this.props;
+    const title = pageData?.title || '';
+
     return (
       <>
-        <h2>Demo: CSS-in-JS (emotion)</h2>
+        <h2>{title}</h2>
         <div css={{ color: 'darkorchid' }}>Object Style</div>
         <br />
         <div css={css({ color: 'darkorchid' })}>
@@ -88,5 +93,11 @@ class CssInJsDemo extends React.Component<any, any> {
     );
   }
 }
+
+export interface CssInJsDemoProps {
+  pageData: CssInJsDemoData | null;
+}
+
+export interface CssInJsDemoState {}
 
 export default CssInJsDemo;
