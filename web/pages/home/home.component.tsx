@@ -2,37 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import routes from 'routes/routes';
-import { extractInitialData } from 'starter/core/services/common.service';
-import { getInitialData } from 'starter/core/services/pages.service';
-import { getGenericReqFromLocation } from 'starter/utils/ssr-utils';
+import withInitialData from 'starter/hocs/with-initial-data';
 import { PropsRoot } from 'model/common.model';
 import { HomePageData } from 'model/pagedata.model';
 
 import common from 'assets/css/common.module.scss';
 
 class Home extends React.Component<HomeProps, HomeState> {
-  constructor(props: HomeProps) {
-    super(props);
-
-    const initialData = extractInitialData(this.props);
-    if (initialData) {
-      const { pageData } = initialData;
-      this.state = { pageData };
-    }
-  }
-
-  componentDidMount() {
-    const req = getGenericReqFromLocation(this.props.location);
-    getInitialData<HomePageData>(req).subscribe(initialData => {
-      if (initialData) {
-        const { pageData } = initialData;
-        this.setState({ pageData });
-      }
-    });
-  }
-
   render() {
-    const pageData = this.state?.pageData || null;
+    const { pageData } = this.props;
     const title = pageData?.title || '';
     const description = pageData?.description || '';
 
@@ -69,10 +47,10 @@ class Home extends React.Component<HomeProps, HomeState> {
   }
 }
 
-export default Home;
+export default withInitialData(Home);
 
-export interface HomeProps extends PropsRoot {}
-
-export interface HomeState {
+export interface HomeProps extends PropsRoot {
   pageData: HomePageData | null;
 }
+
+export interface HomeState {}
