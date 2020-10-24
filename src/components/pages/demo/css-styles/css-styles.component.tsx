@@ -1,12 +1,17 @@
 import React from 'react';
 
+import { CssStylesDemoData } from 'src/core/models/response.model';
+
 import styles from './css-styles.module.scss';
 
 class CssStylesDemo extends React.Component<CssStylesDemoProps, CssStylesDemoState> {
   render() {
+    const { pageData } = this.props;
+    const title = pageData?.title || '';
+
     return (
       <>
-        <h2>Demo: CSS Styles</h2>
+        <h2>{title}</h2>
         <div className={styles.demo}>
           <div className={styles.gradientDemo}>linear-gradient (Vendor prefixes)</div>
           <br />
@@ -21,7 +26,9 @@ class CssStylesDemo extends React.Component<CssStylesDemoProps, CssStylesDemoSta
   }
 }
 
-export interface CssStylesDemoProps {}
+export interface CssStylesDemoProps {
+  pageData: CssStylesDemoData | null;
+}
 
 export interface CssStylesDemoState {}
 
