@@ -6,6 +6,10 @@ import { InitialData } from 'src/core/models/response.model';
 import { template } from './template';
 
 const sendServerResponse = (response: string, res: Response, req: Request, contentType = 'text/html') => {
+  if (res.locals.notFound) {
+    res.status(404);
+  }
+
   res.header('Content-Type', contentType);
   res.send(response);
 };
