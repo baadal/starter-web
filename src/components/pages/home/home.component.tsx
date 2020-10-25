@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import routes from 'src/core/routes/routes';
 import { extractInitialData } from 'src/core/services/common.service';
 import { getInitialData } from 'src/core/services/pages.service';
+import { getGenericReqFromLocation } from 'src/utils/utils';
 import { PropsRoot } from 'src/core/models/common.model';
 import { HomePageData } from 'src/core/models/response.model';
 
@@ -21,7 +22,8 @@ class Home extends React.Component<HomeProps, HomeState> {
   }
 
   componentDidMount() {
-    getInitialData<HomePageData>(this.props.location.pathname).subscribe(initialData => {
+    const req = getGenericReqFromLocation(this.props.location);
+    getInitialData<HomePageData>(req).subscribe(initialData => {
       if (initialData) {
         const { pageData } = initialData;
         this.setState({ pageData });

@@ -4,10 +4,12 @@ import { map } from 'rxjs/operators';
 import HttpClient from 'src/core/services/http-client';
 import { findRoute } from 'src/core/routes/routes.provider';
 import env from 'src/const/env.values';
+import { GenericRequest } from 'src/core/models/common.model';
 import { InitialData } from 'src/core/models/response.model';
 import logger from 'starter/logger';
 
-const getPageData = <T = any>(path: string) => {
+export const getPageData = <T = any>(req: GenericRequest | null) => {
+  const path = req?.path || '';
   const route = findRoute(path);
 
   const source = route?.source || '';
@@ -22,8 +24,8 @@ const getPageData = <T = any>(path: string) => {
   return of(null);
 };
 
-export const getInitialData = <T = any>(path: string): Observable<InitialData<T> | null> => {
-  return forkJoin([getPageData<T>(path)]).pipe(
+export const getInitialData = <T = any>(req: GenericRequest | null): Observable<InitialData<T> | null> => {
+  return forkJoin([getPageData<T>(req)]).pipe(
     map(result => ({
       pageData: result[0],
     }))
