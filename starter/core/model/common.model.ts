@@ -13,3 +13,11 @@ export interface EnvValues extends StringIndexable<string> {
   apiBasePublicUrl: string;
   assetsBaseUrl: string;
 }
+
+export interface GenericRequest {
+  url: string;
+  path: string;
+  route: { path: string };
+  query?: StringIndexable<any>;
+  params?: any;
+}
