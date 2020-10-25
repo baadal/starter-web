@@ -7,24 +7,32 @@ import { PropsRoot } from 'src/core/models/common.model';
 
 function withInitialData<T = any>(Component: React.ComponentType<any>): React.ComponentType<any> {
   class WithInitialData extends React.Component<WithInitialDataProps, WithInitialDataState> {
+    private isSsr = true;
+
     constructor(props: WithInitialDataProps) {
       super(props);
 
       const initialData = extractInitialData(this.props);
-      if (initialData) {
+      if (!initialData) {
+        this.isSsr = false;
+      } else {
         const { pageData } = initialData;
         this.state = { pageData };
       }
     }
 
     componentDidMount() {
-      const req = getGenericReqFromLocation(this.props.location);
-      getInitialData<T>(req).subscribe(initialData => {
-        if (initialData) {
-          const { pageData } = initialData;
-          this.setState({ pageData });
-        }
-      });
+      if (this.isSsr) {
+        this.isSsr = false;
+      } else {
+        const req = getGenericReqFromLocation(this.props.location);
+        getInitialData<T>(req).subscribe(initialData => {
+          if (initialData) {
+            const { pageData } = initialData;
+            this.setState({ pageData });
+          }
+        });
+      }
     }
 
     render() {
