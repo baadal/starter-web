@@ -27,8 +27,8 @@ const sendServerResponse = (response: string, res: Response, req: Request, conte
 };
 
 const serverResponse = (req: Request, res: Response, initialData: InitialData | null) => {
-  const { content } = serverRender(req.url, initialData);
-  const response = template(content, initialData);
+  const { content, scriptTags, styleTags, linkTags } = serverRender(req.url, initialData);
+  const response = template(content, scriptTags, styleTags, linkTags, initialData);
   sendServerResponse(response, res, req);
 };
 
