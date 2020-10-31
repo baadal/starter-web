@@ -7,6 +7,7 @@ import Dotenv from 'dotenv-webpack';
 import dotenv from 'dotenv';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import LoadablePlugin from '@loadable/webpack-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 // @ts-ignore
 import IgnoreEmitPlugin from 'ignore-emit-webpack-plugin';
@@ -20,6 +21,7 @@ import * as event from '../starter/event';
 
 const isProd = checkProd();
 const isServer = checkServer();
+const isAnalyze = (process.env.BUNDLE_ANALYZE === 'true');
 
 const dotEnvFile = `env/.env.${isProd ? 'prod' : 'dev'}`;
 dotenv.config({ path: path.resolve(process.cwd(), dotEnvFile) });
@@ -86,6 +88,10 @@ const common: ConfigurationFactory = (env: any) => {
 
   if (isServer && isProd) {
     plugins.push(new IgnoreEmitPlugin(/\.css$/));
+  }
+
+  if (isAnalyze) {
+    plugins.push(new BundleAnalyzerPlugin());
   }
 
   let devtool: Configuration['devtool'] = false;
