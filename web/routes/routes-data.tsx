@@ -25,6 +25,11 @@ export const routesData: RouteData[] = [
     source: routes.cssInJsDemo.source,
   },
   {
+    path: routes.stateStoreDemo.path,
+    component: loadable(() => import(/* webpackChunkName: "demo" */ 'pages/demo/state-store/state-store.component')),
+    source: routes.stateStoreDemo.source,
+  },
+  {
     path: routes.home.path,
     component: loadable(() => import(/* webpackChunkName: "home" */ 'pages/home/home.component')),
     source: routes.home.source,

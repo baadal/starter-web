@@ -17,3 +17,7 @@ export type CssInJsDemoData = PageDataRoot;
 export interface NotFoundPageData extends PageDataRoot {
   message: string;
 }
+
+export interface StateStoreDemoData extends PageDataRoot {
+  timestamp: string;
+}
