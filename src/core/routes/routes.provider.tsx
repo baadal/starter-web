@@ -25,6 +25,11 @@ export const routesData: RouteData[] = [
     source: routes.cssInJsDemo.source,
   },
   {
+    path: routes.stateStoreDemo.path,
+    component: loadable(() => import(/* webpackChunkName: "demo" */ 'src/components/pages/demo/state-store/state-store.component')), // eslint-disable-line
+    source: routes.stateStoreDemo.source,
+  },
+  {
     path: routes.home.path,
     component: loadable(() => import(/* webpackChunkName: "home" */ 'src/components/pages/home/home.component')),
     source: routes.home.source,
