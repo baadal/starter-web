@@ -10,6 +10,8 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import nodeExternals from 'webpack-node-externals';
 // @ts-ignore
 import IgnoreEmitPlugin from 'ignore-emit-webpack-plugin';
+// @ts-ignore
+import LoadablePlugin from '@loadable/webpack-plugin';
 
 import dev from './webpack.dev';
 import prod from './webpack.prod';
@@ -24,6 +26,8 @@ dotenv.config({ path: path.resolve(process.cwd(), dotEnvFile) });
 const common = (env: any) => {
   const buildRoot = 'build';
   const outFolder = isServer ? `${buildRoot}/server` : `${buildRoot}/public`;
+
+  const statsFileName = 'loadable-stats.json';
 
   const outputFileName = (!isServer && isProd) ? '[name].[contenthash:10].js' : '[name].js';
   const chunkFilename = (!isServer && isProd) ? '[name].[contenthash:10].chunk.js' : '[name].chunk.js';
@@ -68,6 +72,13 @@ const common = (env: any) => {
         { from: 'static' }
       ]
     }));
+    plugins.push(new LoadablePlugin({
+      filename: statsFileName,
+      outputAsset: false,
+      writeToDisk: {
+        filename: path.resolve(process.cwd(), buildRoot),
+      }
+    }) as any); // [TO FIX]: LoadablePlugin != WebpackPluginInstance
   }
 
   if (isServer && isProd) {
@@ -186,7 +197,16 @@ const common = (env: any) => {
         {
           test: /\.(tsx?|jsx?)$/,
           use: 'babel-loader',
-          exclude: /node_modules/,
+          exclude: {
+            and: [
+              // exclude libraries in node_modules
+              /node_modules/,
+            ],
+            not: [
+              // however, transpile these libraries because they use modern syntax
+              /node_modules\/@loadable\/component/,
+            ],
+          },
         },
         {
           test: /\.s?css$/,
