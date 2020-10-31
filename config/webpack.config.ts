@@ -11,6 +11,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import IgnoreEmitPlugin from 'ignore-emit-webpack-plugin';
 
 import dev from './webpack.dev';
+import prod from './webpack.prod';
 import { checkProd, checkServer } from '../src/utils/env.utils';
 
 const isProd = checkProd();
@@ -23,13 +24,13 @@ const common: ConfigurationFactory = (env: any) => {
   const buildRoot = 'build';
   const outFolder = isServer ? `${buildRoot}/server` : `${buildRoot}/public`;
 
-  const outputFileName = '[name].js';
-  const chunkFilename = '[name].chunk.js';
+  const outputFileName = (!isServer && isProd) ? '[name].[contenthash:10].js' : '[name].js';
+  const chunkFilename = (!isServer && isProd) ? '[name].[contenthash:10].chunk.js' : '[name].chunk.js';
 
-  const miniCssFileName = 'style.css';
-  const miniCssChunkName = '[name].chunk.css';
+  const miniCssFileName = isProd ? 'style.[contenthash:10].css' : 'style.css';
+  const miniCssChunkName = isProd ? '[name].[contenthash:10].chunk.css' : '[name].chunk.css';
 
-  const assetName = '[name].[ext]';
+  const assetName = isProd ? '[name].[contenthash:10].[ext]' : '[name].[ext]';
 
   const envConfig: Configuration = {};
 
@@ -213,7 +214,7 @@ const common: ConfigurationFactory = (env: any) => {
 
 const config: ConfigurationFactory = (env: any = {}) => {
   const commonConfig = common(env, {}) as Configuration;
-  const envConfig = dev(env, {}) as Configuration;
+  const envConfig = (isProd ? prod : dev)(env, {}) as Configuration;
   return merge(commonConfig, envConfig);
 };
 
