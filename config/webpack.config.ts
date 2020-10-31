@@ -6,6 +6,7 @@ import CopyWebpackPlugin from 'copy-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
 import dotenv from 'dotenv';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import LoadablePlugin from '@loadable/webpack-plugin';
 
 // @ts-ignore
 import IgnoreEmitPlugin from 'ignore-emit-webpack-plugin';
@@ -23,6 +24,8 @@ dotenv.config({ path: path.resolve(process.cwd(), dotEnvFile) });
 const common: ConfigurationFactory = (env: any) => {
   const buildRoot = 'build';
   const outFolder = isServer ? `${buildRoot}/server` : `${buildRoot}/public`;
+
+  const statsFileName = 'loadable-stats.json';
 
   const outputFileName = (!isServer && isProd) ? '[name].[contenthash:10].js' : '[name].js';
   const chunkFilename = (!isServer && isProd) ? '[name].[contenthash:10].chunk.js' : '[name].chunk.js';
@@ -63,6 +66,13 @@ const common: ConfigurationFactory = (env: any) => {
       patterns: [
         { from: 'static' }
       ]
+    }));
+    plugins.push(new LoadablePlugin({
+      filename: statsFileName,
+      outputAsset: false,
+      writeToDisk: {
+        filename: path.resolve(process.cwd(), buildRoot),
+      }
     }));
   }
 
@@ -176,7 +186,13 @@ const common: ConfigurationFactory = (env: any) => {
         {
           test: /\.(tsx?|jsx?)$/,
           use: 'babel-loader',
-          exclude: /node_modules/,
+          exclude: {
+            test: /node_modules/, // exclude libraries in node_modules
+            not: [
+              // however, transpile these libraries because they use modern syntax
+              /node_modules\/@loadable\/component/,
+            ],
+          },
         },
         {
           test: /\.s?css$/,
