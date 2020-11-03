@@ -30,6 +30,11 @@ export const routesData: RouteData[] = [
     source: routes.stateStoreDemo.source,
   },
   {
+    path: routes.fibonacciDemo.path,
+    component: loadable(() => import(/* webpackChunkName: "demo" */ 'src/components/pages/demo/fibonacci/fibonacci.component')),
+    source: routes.fibonacciDemo.source,
+  },
+  {
     path: routes.home.path,
     component: loadable(() => import(/* webpackChunkName: "home" */ 'src/components/pages/home/home.component')),
     source: routes.home.source,

@@ -17,6 +17,7 @@ import { footerInfo } from './routes/partials/footer/footer.api';
 import { cssStylesDemoInfo } from './routes/pages/demo/css-styles/css-styles.api';
 import { cssInJsDemo } from './routes/pages/demo/css-in-js/css-in-js.api';
 import { storeInfo } from './routes/pages/demo/state-store/state-store.api';
+import { getFibonacciNum } from './routes/pages/demo/fibonacci/fibonacci.api';
 
 const app = express();
 const PORT = process.env.portApi || 4000;
@@ -65,6 +66,7 @@ app.get('/v1/data/about', (req, res) => sendResponse(req, res, aboutInfo));
 app.get('/v1/data/demo/css-styles', (req, res) => sendResponse(req, res, cssStylesDemoInfo));
 app.get('/v1/data/demo/css-in-js', (req, res) => sendResponse(req, res, cssInJsDemo));
 app.get('/v1/data/demo/state-store', (req, res) => sendResponse(req, res, storeInfo()));
+app.get('/v1/data/demo/fibonacci/:n', (req, res) => sendResponse(req, res, getFibonacciNum(req.params.n)));
 app.get('/v1/data/home', (req, res) => sendResponse(req, res, homeInfo));
 app.get('/v1/data/not-found', (req, res) => sendResponse(req, res, notFoundInfo));
 
