@@ -38,6 +38,13 @@ export const routesData: RouteData[] = [
     source: routes.stateStoreDemo.source,
   },
   {
+    path: routes.fibonacciDemo.path,
+    component: loadable(
+      () => import(/* webpackChunkName: "demo", webpackPrefetch: true */ 'src/components/pages/demo/fibonacci/fibonacci.component') // eslint-disable-line
+    ),
+    source: routes.fibonacciDemo.source,
+  },
+  {
     path: routes.home.path,
     component: loadable(
       () => import(/* webpackChunkName: "home", webpackPrefetch: true */ 'src/components/pages/home/home.component')

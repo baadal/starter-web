@@ -18,7 +18,14 @@ const getPageData = <T = any>(req: GenericRequest | null, res?: Response) => {
     res.locals.notFound = true;
   }
 
-  const source = route?.source || '';
+  let source = route?.source || '';
+  if (req?.params.p) {
+    source = source.replace('$p', req.params.p) || '';
+  }
+
+  if (source.includes('$')) {
+    logger.warn('Final source must not include template variable.', source);
+  }
 
   if (!env.apiBaseUrl) {
     logger.warn('Unable to construct full URL:', source);
