@@ -30,6 +30,9 @@ class Home extends React.Component<HomeProps, HomeState> {
             <Link to={routes.stateStoreDemo.path}>Demo: State Store</Link>
           </li>
           <li>
+            <Link to="/demo/fibonacci/10">Demo: Parameterized Routing</Link>
+          </li>
+          <li>
             <Link to="/demo/broken-link">Demo: Broken Link</Link>
           </li>
         </ul>
