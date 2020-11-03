@@ -18,6 +18,10 @@ const routes: StringIndexable<RouteInfo> = {
     path: '/demo/state-store',
     source: '/v1/data/demo/state-store',
   },
+  fibonacciDemo: {
+    path: '/demo/fibonacci/:p',
+    source: '/v1/data/demo/fibonacci/$p',
+  },
   home: {
     path: '/',
     source: '/v1/data/home',
