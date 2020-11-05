@@ -12,10 +12,13 @@ import nodeExternals from 'webpack-node-externals';
 import IgnoreEmitPlugin from 'ignore-emit-webpack-plugin';
 // @ts-ignore
 import LoadablePlugin from '@loadable/webpack-plugin';
+// @ts-ignore
+import EventHooksPlugin from 'event-hooks-webpack-plugin';
 
 import dev from './webpack.dev';
 import prod from './webpack.prod';
 import { checkProd, checkServer } from '../../utils/env';
+import * as event from '../../utils/event';
 
 const isProd = checkProd();
 const isServer = checkServer();
@@ -50,6 +53,11 @@ const common = (env: any) => {
   }
 
   const plugins: WebpackPluginInstance[] = [
+    new EventHooksPlugin({
+      run: () => event.run(),
+      make: () => event.make(isServer),
+      done: () => event.done(isServer),
+    }),
     new Dotenv({ path: path.resolve(process.cwd(), `custom/env/.env`) }),
     new webpack.EnvironmentPlugin({
       npm_package_version: '',
