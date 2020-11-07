@@ -4,9 +4,12 @@ import merge from 'webpack-merge';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
 import dotenv from 'dotenv';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 // @ts-ignore
 import nodeExternals from 'webpack-node-externals';
+// @ts-ignore
+import IgnoreEmitPlugin from 'ignore-emit-webpack-plugin';
 
 import dev from './webpack.dev';
 import { checkProd, checkServer } from '../../utils/env';
@@ -23,6 +26,9 @@ const common = (env: any) => {
 
   const outputFileName = '[name].js';
   const chunkFilename = '[name].chunk.js';
+
+  const miniCssFileName = 'style.css';
+  const miniCssChunkName = '[name].chunk.css';
 
   const assetName = '[name][ext]';
 
@@ -45,6 +51,10 @@ const common = (env: any) => {
       NODE_ENV: 'development', // use 'development' unless process.env.NODE_ENV is defined
       PLATFORM: '',
     }),
+    new MiniCssExtractPlugin({
+      filename: `css/${miniCssFileName}`,
+      chunkFilename: `css/${miniCssChunkName}`,
+    }),
   ];
 
   if (isServer) {
@@ -57,6 +67,10 @@ const common = (env: any) => {
         { from: 'web/assets/static' }
       ]
     }));
+  }
+
+  if (isServer && isProd) {
+    plugins.push(new IgnoreEmitPlugin(/\.css$/));
   }
 
   let devtool: Configuration['devtool'] | null = null;
@@ -115,6 +129,13 @@ const common = (env: any) => {
           test: /\.(tsx?|jsx?)$/,
           use: 'babel-loader',
           exclude: /node_modules/,
+        },
+        {
+          test: /\.css$/,
+          use: [
+            MiniCssExtractPlugin.loader,
+            'css-loader',
+          ]
         },
         {
           test: /\.(png|jpe?g|gif|svg|ico)$/i,

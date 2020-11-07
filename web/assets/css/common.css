@@ -1,0 +1,43 @@
+.header,
+.footer {
+  font-size: 0.9rem;
+}
+
+.hero-text {
+  color: #06f;
+  font-size: 1.7rem;
+  font-weight: bold;
+  margin-top: 1.7rem;
+  margin-bottom: 1.4rem;
+}
+
+.hero-subtext {
+  background: linear-gradient(90deg, #ff8a00, #e52e71);
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-split {
+  color: #222;
+}
+
+.page-title {
+  color: #7026B9;
+}
+
+.alert-title {
+  color: #bb3385;
+}
+
+.page-desc {
+  padding-top: 5px;
+  font-size: 0.95rem;
+}
+
+.emoji-big {
+  font-size: 1.5rem;
+}
+
+.text-center {
+  text-align: center;
+}
