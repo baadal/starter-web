@@ -1,0 +1,26 @@
+html {
+  font-size: 20px;
+}
+
+@media (min-width: 481px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 15px 13px;
+  color: #222;
+}
+
+a {
+  text-decoration: none;
+  border-bottom: 1px solid #dedede;
+}
+
+ul li {
+  padding: 4px;
+}
