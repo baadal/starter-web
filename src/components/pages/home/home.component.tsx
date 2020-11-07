@@ -3,11 +3,13 @@ import { Link } from 'react-router-dom';
 
 import { PropsRoot } from 'src/core/models/common.model';
 
+import 'src/assets/css/common.css';
+
 class Home extends React.Component<HomeProps, HomeState> {
   render() {
     return (
       <>
-        <h2>My Web App</h2>
+        <h2 className="hero-text">My Web App</h2>
         <p>The modern way!</p>
         <ul>
           <li>
