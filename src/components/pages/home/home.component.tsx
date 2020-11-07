@@ -4,15 +4,21 @@ import { Link } from 'react-router-dom';
 import routes from 'src/core/routes/routes';
 import { PropsRoot } from 'src/core/models/common.model';
 
+import 'src/assets/css/common.css';
+
 class Home extends React.Component<HomeProps, HomeState> {
   render() {
     return (
       <>
-        <div>
-          <h2>Starter.js &bull; React Starter Kit</h2>
+        <div className="text-center">
+          <div className="hero-text">
+            <span>Starter.js</span>
+            <span className="hero-split">&nbsp;&nbsp;&bull;&nbsp;&nbsp;</span>
+            <span className="hero-subtext">React Starter Kit</span>
+          </div>
           <p>Start Building!</p>
         </div>
-        <div>
+        <div className="page-desc">
           <p>
             Please visit{' '}
             <a href="https://starterjs.dev/docs" target="_blank" rel="noreferrer">
@@ -27,7 +33,7 @@ class Home extends React.Component<HomeProps, HomeState> {
           <p>
             <em>Build something awesome!</em>
             <span>&nbsp;&nbsp;</span>
-            <span>🚀</span>
+            <span className="emoji-big">🚀</span>
           </p>
         </div>
       </>
