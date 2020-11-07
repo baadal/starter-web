@@ -48,7 +48,8 @@
     "blist:update": "npx browserslist@latest --update-db",
     "ncu": "ncu",
     "ncuu": "ncu -u",
-    "check-env": "node -e 'console.log(process.env)' | grep npm"
+    "check-env": "node -e 'console.log(process.env)' | grep npm",
+    "cloc": "npx cloc --exclude-list-file=.clocignore --exclude-dir=$(tr '\\n' ',' < .clocignore) ."
   },
   "repository": {
     "type": "git",
@@ -87,6 +88,7 @@
     "@typescript-eslint/parser": "^4.28.1",
     "babel-loader": "^8.2.2",
     "browserslist": "^4.16.6",
+    "cloc": "^2.8.0",
     "copy-webpack-plugin": "^9.0.1",
     "cross-env": "^7.0.3",
     "css-loader": "^5.2.6",
