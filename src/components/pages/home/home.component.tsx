@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 
 import { PropsRoot } from 'src/core/models/common.model';
 
-import 'src/assets/css/common.css';
+import styles from 'src/assets/css/common.module.css';
 
 class Home extends React.Component<HomeProps, HomeState> {
   render() {
     return (
       <>
-        <h2 className="hero-text">My Web App</h2>
+        <h2 className={styles.heroText}>My Web App</h2>
         <p>The modern way!</p>
         <ul>
           <li>
