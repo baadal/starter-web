@@ -1,10 +1,10 @@
 import React from 'react';
 
-import 'assets/css/common.css';
+import common from 'assets/css/common.module.css';
 
 const Footer = (_props: React.ComponentProps<any>) => {
   return (
-    <div className="footer">
+    <div className={common.footer}>
       <br />
       <span>
         <span>Built with</span>{' '}
