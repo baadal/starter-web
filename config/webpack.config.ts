@@ -86,16 +86,51 @@ const common: ConfigurationFactory = (env: any) => {
     children: false
   };
 
-  const getStyleLoaders = () => {
-    const loaders: string[] = ['css-loader'];
+  const cssLoader = (modules?: boolean) => {
+    if (!modules) {
+      return 'css-loader';
+    }
+    return ({
+      loader: 'css-loader',
+      options: {
+        // esModule: true,
+        modules: {
+          // namedExport: true,
+          exportLocalsConvention: 'camelCaseOnly',
+          localIdentName: isProd ? '[local]_[hash:base64:5]' : '[name]__[local]__[hash:base64:5]',
+        },
+      }
+    });
+  };
+
+  const styleLoader = (modules?: boolean) => {
+    if (!modules) {
+      return 'style-loader';
+    }
+    return ({
+      loader: 'style-loader',
+    });
+  };
+
+  const cssExtractLoader = (modules?: boolean) => {
+    if (!modules) {
+      return MiniCssExtractPlugin.loader;
+    }
+    return ({
+      loader: MiniCssExtractPlugin.loader,
+    });
+  };
+
+  const getStyleLoaders = (modules?: boolean) => {
+    const loaders: any[] = [cssLoader(modules)];
     if (!isServer) {
       if (!isProd) {
-        loaders.unshift('style-loader');
+        loaders.unshift(styleLoader(modules));
       } else {
-        loaders.unshift(MiniCssExtractPlugin.loader);
+        loaders.unshift(cssExtractLoader(modules));
       }
     } else {
-      loaders.unshift(MiniCssExtractPlugin.loader);
+      loaders.unshift(cssExtractLoader(modules));
     }
     return loaders;
   };
@@ -130,7 +165,12 @@ const common: ConfigurationFactory = (env: any) => {
         },
         {
           test: /\.css$/,
-          use: [...getStyleLoaders()]
+          use: [...getStyleLoaders()],
+          exclude: /\.module\.css$/,
+        },
+        {
+          test: /\.module\.css$/,
+          use: [...getStyleLoaders(true)],
         },
         {
           test: /\.(png|jpe?g|gif|svg|ico)$/i,

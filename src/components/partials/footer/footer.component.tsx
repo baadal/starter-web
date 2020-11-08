@@ -1,10 +1,10 @@
 import React from 'react';
 
-import 'src/assets/css/common.css';
+import styles from 'src/assets/css/common.module.css';
 
 const Footer = (_props: React.ComponentProps<any>) => {
   return (
-    <div className="footer">
+    <div className={styles.footer}>
       <br />
       <span>© 2020-present</span>
       <span>
