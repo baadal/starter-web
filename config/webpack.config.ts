@@ -1,22 +1,22 @@
-const path = require('path');
-const webpack = require('webpack');
-const nodeExternals = require('webpack-node-externals');
-const merge = require('webpack-merge');
+import path from 'path';
+import webpack, { Configuration, ConfigurationFactory, Entry, Plugin } from 'webpack';
+import nodeExternals from 'webpack-node-externals';
+import merge from 'webpack-merge';
 
-const dev = require('./webpack.dev');
-const { checkProd, checkServer } = require('../src/utils/env.utils');
+import dev from './webpack.dev';
+import { checkProd, checkServer } from '../src/utils/env.utils';
 
 const isProd = checkProd();
 const isServer = checkServer();
 
-const common = (env) => {
+const common: ConfigurationFactory = (env: any) => {
   const buildRoot = 'build';
   const outFolder = isServer ? `${buildRoot}/server` : `${buildRoot}/public`;
 
   const outputFileName = '[name].js';
   const chunkFilename = '[name].chunk.js';
 
-  const envConfig = {};
+  const envConfig: Configuration = {};
 
   if (isServer) {
     envConfig.target = 'node'; // Target node environment on server (ignore built-in modules like path, fs, etc.)
@@ -25,7 +25,7 @@ const common = (env) => {
     envConfig.node = { fs: 'empty' }; // Don't provide node module polyfills in non-node environment
   }
 
-  const plugins = [
+  const plugins: Plugin[] = [
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development', // use 'development' unless process.env.NODE_ENV is defined
       PLATFORM: '',
@@ -38,7 +38,7 @@ const common = (env) => {
     }));
   }
 
-  let devtool = '';
+  let devtool: Configuration['devtool'] = false;
   if (!isServer && !isProd) {
     devtool = 'inline-source-map';
   }
@@ -55,7 +55,7 @@ const common = (env) => {
     children: false
   };
 
-  const entry = isServer ? {
+  const entry: Entry = isServer ? {
     index: './src/index.ts'
   } : {
     client: './src/client.ts'
@@ -91,8 +91,10 @@ const common = (env) => {
   });
 };
 
-module.exports = (env = {}) => {
-  const commonConfig = common(env);
-  const envConfig = dev(env);
+const config: ConfigurationFactory = (env: any = {}) => {
+  const commonConfig = common(env, {}) as Configuration;
+  const envConfig = dev(env, {}) as Configuration;
   return merge(commonConfig, envConfig);
 };
+
+export default config;
