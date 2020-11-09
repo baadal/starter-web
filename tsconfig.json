@@ -10,7 +10,7 @@
     ],
     "baseUrl": "./",
     "target": "esnext",
-    "module": "esnext",
+    "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,

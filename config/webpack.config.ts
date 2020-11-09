@@ -1,34 +1,36 @@
-const path = require('path');
-const webpack = require('webpack');
-const nodeExternals = require('webpack-node-externals');
-const { merge } = require('webpack-merge');
+import path from 'path';
+import webpack, { Configuration, ResolveOptions, Entry, WebpackPluginInstance } from 'webpack';
+import merge from 'webpack-merge';
 
-const dev = require('./webpack.dev');
-const { checkProd, checkServer } = require('../src/utils/env.utils');
+// @ts-ignore
+import nodeExternals from 'webpack-node-externals';
+
+import dev from './webpack.dev';
+import { checkProd, checkServer } from '../src/utils/env.utils';
 
 const isProd = checkProd();
 const isServer = checkServer();
 
-const common = (env) => {
+const common = (env: any) => {
   const buildRoot = 'build';
   const outFolder = isServer ? `${buildRoot}/server` : `${buildRoot}/public`;
 
   const outputFileName = '[name].js';
   const chunkFilename = '[name].chunk.js';
 
-  const envConfig = {};
+  const envConfig: Configuration = {};
 
   if (isServer) {
-    envConfig.target = 'node'; // Target node environment on server (ignore built-in modules like path, fs, etc.)
-    envConfig.externals = [nodeExternals()]; // No need to bundle node_modules folder for backend/server
+    envConfig.externalsPresets = { node: true }; // Target node environment on server (ignore built-in modules like path, fs, etc.)
+    envConfig.externals = [nodeExternals()]; // No need to bundle modules in node_modules folder for backend/server
   }
 
-  const resolve = {};
+  const resolve: ResolveOptions = {};
   if (!isServer) {
     resolve.fallback = { fs: false }; // Don't provide node module polyfills in non-node environment
   }
 
-  const plugins = [
+  const plugins: WebpackPluginInstance[] = [
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development', // use 'development' unless process.env.NODE_ENV is defined
       PLATFORM: '',
@@ -41,7 +43,7 @@ const common = (env) => {
     }));
   }
 
-  let devtool = null;
+  let devtool: Configuration['devtool'] | null = null;
   if (!isServer && !isProd) {
     devtool = 'inline-source-map';
   } else {
@@ -60,13 +62,13 @@ const common = (env) => {
     children: false
   };
 
-  const entry = isServer ? {
+  const entry: Entry = isServer ? {
     index: './src/index.ts'
   } : {
     client: './src/client.ts'
   };
 
-  let config = {
+  let config: Configuration = {
     entry,
     output: {
       filename: outputFileName,
@@ -99,8 +101,10 @@ const common = (env) => {
   return config;
 };
 
-module.exports = (env = {}) => {
+const config = (env: any = {}) => {
   const commonConfig = common(env);
   const envConfig = dev(env);
   return merge(commonConfig, envConfig);
 };
+
+export default config;
