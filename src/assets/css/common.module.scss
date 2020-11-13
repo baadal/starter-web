@@ -1,10 +1,12 @@
+@import 'shared/variables';
+
 .header,
 .footer {
   font-size: 0.9rem;
 }
 
 .hero-text {
-  color: var(--header-color);
+  color: $header-color;
   font-size: 1.7rem;
   font-weight: bold;
   margin-top: 1.7rem;
@@ -18,11 +20,11 @@
 }
 
 .hero-split {
-  color: var(--text-color);
+  color: $text-color;
 }
 
 .page-title {
-  color: var(--title-color);
+  color: $title-color;
 }
 
 .alert-title {
