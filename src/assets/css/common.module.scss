@@ -1,5 +1,7 @@
+@import 'shared/variables';
+
 .hero-text {
-  color: var(--header-color);
+  color: $header-color;
   font-size: 1.7em;
   font-weight: bold;
   display: block;

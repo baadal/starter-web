@@ -86,13 +86,14 @@ const common: ConfigurationFactory = (env: any) => {
     children: false
   };
 
-  const cssLoader = (modules?: boolean) => {
+  const cssLoader = (nextCount: number, modules?: boolean) => {
     if (!modules) {
       return 'css-loader';
     }
     return ({
       loader: 'css-loader',
       options: {
+        importLoaders: nextCount,
         // esModule: true,
         modules: {
           // namedExport: true,
@@ -122,7 +123,8 @@ const common: ConfigurationFactory = (env: any) => {
   };
 
   const getStyleLoaders = (modules?: boolean) => {
-    const loaders: any[] = [cssLoader(modules)];
+    const nextLoaders = ['sass-loader'];
+    const loaders: any[] = [cssLoader(nextLoaders.length, modules), ...nextLoaders];
     if (!isServer) {
       if (!isProd) {
         loaders.unshift(styleLoader(modules));
@@ -164,12 +166,12 @@ const common: ConfigurationFactory = (env: any) => {
           exclude: /node_modules/,
         },
         {
-          test: /\.css$/,
+          test: /\.s?css$/,
           use: [...getStyleLoaders()],
-          exclude: /\.module\.css$/,
+          exclude: /\.module\.s?css$/,
         },
         {
-          test: /\.module\.css$/,
+          test: /\.module\.s?css$/,
           use: [...getStyleLoaders(true)],
         },
         {

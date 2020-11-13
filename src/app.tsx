@@ -5,7 +5,7 @@ import Header from 'src/components/partials/header/header.component';
 import Footer from 'src/components/partials/footer/footer.component';
 import { routesProvider } from 'src/core/routes/routes.provider';
 
-import 'src/assets/css/global.css';
+import 'src/assets/css/global.scss';
 
 class App extends React.Component<any> {
   render() {

@@ -6,3 +6,4 @@ declare module '*.svg';
 declare module '*.ico';
 
 declare module '*.css';
+declare module '*.scss';
