@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import common from 'assets/css/common.module.css';
+import common from 'assets/css/common.module.scss';
 
 const NotFound = (_props: React.ComponentProps<any>) => {
   return (

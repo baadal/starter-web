@@ -1,0 +1,11 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+// Include padding and border in elements' total width and height
+// Ref: https://www.freecodecamp.org/news/html-page-width-height/
+* {
+  box-sizing: border-box;
+}

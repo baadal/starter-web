@@ -5,7 +5,7 @@ import { routesProvider } from 'starter/core/routes/routes.provider';
 import Header from 'components/layouts/header/header.component';
 import Footer from 'components/layouts/footer/footer.component';
 
-import 'assets/css/global.css';
+import 'assets/css/global.scss';
 
 class App extends React.Component<any> {
   render() {

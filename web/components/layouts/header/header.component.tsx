@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import routes from 'routes/routes';
 
-import common from 'assets/css/common.module.css';
+import common from 'assets/css/common.module.scss';
 
 const Header = (_props: React.ComponentProps<any>) => {
   return (

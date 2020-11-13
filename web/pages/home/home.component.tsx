@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import routes from 'routes/routes';
 import { PropsRoot } from 'model/common.model';
 
-import common from 'assets/css/common.module.css';
+import common from 'assets/css/common.module.scss';
 
 class Home extends React.Component<HomeProps, HomeState> {
   render() {

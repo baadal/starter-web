@@ -1,6 +1,6 @@
 import React from 'react';
 
-import common from 'assets/css/common.module.css';
+import common from 'assets/css/common.module.scss';
 import image from 'assets/images/logo.png';
 
 class About extends React.Component<any> {

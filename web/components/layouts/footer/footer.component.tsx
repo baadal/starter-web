@@ -1,6 +1,6 @@
 import React from 'react';
 
-import common from 'assets/css/common.module.css';
+import common from 'assets/css/common.module.scss';
 
 const Footer = (_props: React.ComponentProps<any>) => {
   return (
