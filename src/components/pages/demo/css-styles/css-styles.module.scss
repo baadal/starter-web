@@ -15,4 +15,7 @@
 
 .demo a {
   color: rebeccapurple;
+  &:hover {
+    color: salmon;
+  }
 }

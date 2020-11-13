@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './css-styles.module.css';
+import styles from './css-styles.module.scss';
 
 class CssStylesDemo extends React.Component<CssStylesDemoProps, CssStylesDemoState> {
   render() {
@@ -13,7 +13,7 @@ class CssStylesDemo extends React.Component<CssStylesDemoProps, CssStylesDemoSta
           <div className={styles.modernFont}>font-family: system-ui (Modern font)</div>
           <br />
           <div>
-            <a href="//g.co">Click Me!</a>
+            <a href="//g.co">Hover Me!</a>
           </div>
         </div>
       </>
