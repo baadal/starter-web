@@ -190,6 +190,7 @@ const common = (env: any) => {
           test: /\.s?css$/,
           use: [...getStyleLoaders()],
           exclude: /\.module\.s?css$/,
+          sideEffects: true,
         },
         {
           test: /\.module\.s?css$/,

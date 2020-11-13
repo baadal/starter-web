@@ -99,5 +99,6 @@
     "opera >= 15",
     "not ie 11",
     "not dead"
-  ]
+  ],
+  "sideEffects": false
 }
