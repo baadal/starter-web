@@ -14,6 +14,7 @@ import { aboutInfo } from './routes/pages/about/about.api';
 import { notFoundInfo } from './routes/pages/not-found/not-found.api';
 import { headerInfo } from './routes/partials/header/header.api';
 import { footerInfo } from './routes/partials/footer/footer.api';
+import { cssStylesDemoInfo } from './routes/pages/demo/css-styles/css-styles.api';
 
 const app = express();
 const PORT = process.env.portApi || 4000;
@@ -59,6 +60,7 @@ const sendResponse = (req: express.Request, res: express.Response, data: any) =>
 };
 
 app.get('/v1/data/about', (req, res) => sendResponse(req, res, aboutInfo));
+app.get('/v1/data/demo/css-styles', (req, res) => sendResponse(req, res, cssStylesDemoInfo));
 app.get('/v1/data/home', (req, res) => sendResponse(req, res, homeInfo));
 app.get('/v1/data/not-found', (req, res) => sendResponse(req, res, notFoundInfo));
 

@@ -21,7 +21,7 @@ class Home extends React.Component<HomeProps, HomeState> {
         <p className={common.punchline}>{description}</p>
         <ul>
           <li>
-            <Link to={routes.about.path}>About Us</Link>
+            <Link to={routes.cssStylesDemo.path}>Demo: CSS Styles</Link>
           </li>
           <li>
             <Link to="/demo/broken-link">Demo: Broken Link</Link>
