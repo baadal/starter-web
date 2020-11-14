@@ -4,7 +4,7 @@
 }
 
 .hero-text {
-  color: #06f;
+  color: var(--header-color);
   font-size: 1.7rem;
   font-weight: bold;
   margin-top: 1.7rem;
@@ -18,11 +18,11 @@
 }
 
 .hero-split {
-  color: #222;
+  color: var(--text-color);
 }
 
 .page-title {
-  color: #7026B9;
+  color: var(--title-color);
 }
 
 .alert-title {
