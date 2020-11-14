@@ -1,0 +1,21 @@
+.demo {
+  padding: 5px;
+}
+
+.demo .gradient-demo {
+  padding: 10px;
+  width: 60%;
+  background: linear-gradient(to right, hotpink, white);
+}
+
+.demo .modern-font {
+  font-family: system-ui;
+  color: brown;
+}
+
+.demo a {
+  color: rebeccapurple;
+  &:hover {
+    color: salmon;
+  }
+}

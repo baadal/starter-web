@@ -9,6 +9,10 @@ export const routesData: RouteData[] = [
     component: require('src/components/pages/about/about.component').default,
   },
   {
+    path: routes.cssStylesDemo.path,
+    component: require('src/components/pages/demo/css-styles/css-styles.component').default,
+  },
+  {
     path: routes.home.path,
     component: require('src/components/pages/home/home.component').default,
   },
