@@ -122,8 +122,19 @@ const common: ConfigurationFactory = (env: any) => {
     });
   };
 
+  const postcssLoader = () => {
+    return ({
+      loader: 'postcss-loader',
+      options: {
+        postcssOptions: {
+          config: path.resolve(process.cwd(), 'postcss.config.js'),
+        },
+      },
+    });
+  };
+
   const getStyleLoaders = (modules?: boolean) => {
-    const nextLoaders = ['sass-loader'];
+    const nextLoaders = [postcssLoader(), 'sass-loader'];
     const loaders: any[] = [cssLoader(nextLoaders.length, modules), ...nextLoaders];
     if (!isServer) {
       if (!isProd) {
