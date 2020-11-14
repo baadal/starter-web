@@ -1,3 +1,11 @@
+@import 'utils/reset';
+
+:root {
+  --header-color: #0066ff;
+  --text-color: #222;
+  --border-color: #dedede;
+}
+
 html {
   font-size: 20px;
 }
@@ -13,12 +21,12 @@ body {
   max-width: 960px;
   margin: 0 auto;
   padding: 15px 13px;
-  color: #222;
+  color: var(--text-color);
 }
 
 a {
   text-decoration: none;
-  border-bottom: 1px solid #dedede;
+  border-bottom: 1px solid var(--border-color);
 }
 
 ul li {

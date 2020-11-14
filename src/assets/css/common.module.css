@@ -1,5 +1,5 @@
 .hero-text {
-  color: #0066ff;
+  color: var(--header-color);
   font-size: 1.7em;
   font-weight: bold;
   display: block;
