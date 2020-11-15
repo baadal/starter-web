@@ -10,6 +10,10 @@ const routes: StringIndexable<RouteInfo> = {
     path: '/demo/css-styles',
     source: '/v1/data/demo/css-styles',
   },
+  cssInJsDemo: {
+    path: '/demo/css-in-js',
+    source: '/v1/data/demo/css-in-js',
+  },
   home: {
     path: '/',
     source: '/v1/data/home',
