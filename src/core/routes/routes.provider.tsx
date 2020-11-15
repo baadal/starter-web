@@ -20,6 +20,11 @@ export const routesData: RouteData[] = [
     source: routes.cssStylesDemo.source,
   },
   {
+    path: routes.cssInJsDemo.path,
+    component: loadable(() => import(/* webpackChunkName: "demo" */ 'src/components/pages/demo/css-in-js/css-in-js.component')),
+    source: routes.cssInJsDemo.source,
+  },
+  {
     path: routes.home.path,
     component: loadable(() => import(/* webpackChunkName: "home" */ 'src/components/pages/home/home.component')),
     source: routes.home.source,
