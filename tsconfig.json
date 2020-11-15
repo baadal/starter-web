@@ -5,6 +5,9 @@
       "./typings",
       "./node_modules/@types"
     ],
+    "types": [
+      "@emotion/react/types/css-prop"
+    ],
     "baseUrl": "./",
     "target": "esnext",
     "module": "commonjs",
