@@ -13,6 +13,10 @@ export const routesData: RouteData[] = [
     component: require('src/components/pages/demo/css-styles/css-styles.component').default,
   },
   {
+    path: routes.cssInJsDemo.path,
+    component: require('src/components/pages/demo/css-in-js/css-in-js.component').default,
+  },
+  {
     path: routes.home.path,
     component: require('src/components/pages/home/home.component').default,
   },

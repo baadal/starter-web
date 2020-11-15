@@ -8,6 +8,9 @@ const routes: StringIndexable<RouteInfo> = {
   cssStylesDemo: {
     path: '/demo/css-styles',
   },
+  cssInJsDemo: {
+    path: '/demo/css-in-js',
+  },
   home: {
     path: '/',
   },
