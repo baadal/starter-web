@@ -1,6 +1,7 @@
 {
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": true,
+    "source.fixAll.stylelint": true
   },
   "eslint.validate": [
     "javascript",
@@ -8,6 +9,8 @@
     "typescript",
     "typescriptreact"
   ],
+  "css.validate": false,
+  "scss.validate": false,
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingEmptyBraces": false,
   "git.ignoreLimitWarning": true,
   "typescript.tsdk": "node_modules/typescript/lib"
