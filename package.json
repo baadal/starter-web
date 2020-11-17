@@ -23,7 +23,6 @@
     "lint:fix": "npm run lint -- --fix",
     "css-lint": "stylelint 'src/**/*.{css,scss}'",
     "css-lint:fix": "npm run css-lint -- --fix",
-    "cssjs-lint": "stylelint 'src/**/*.css.{js,ts}'",
     "clean": "npx rimraf build node_modules/.cache",
     "clean:all": "npx rimraf build node_modules package-lock.json",
     "blame": "git log -S",
