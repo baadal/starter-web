@@ -1,6 +1,59 @@
 import path from 'path';
 
 import { readFile, writeFile, appendToFile, deleteDir } from './lib/file-io';
+import store from './lib/store';
+import logger from './logger';
+
+// const sleep = require('system-sleep');
+
+const displayAssets = (isServer: boolean) => {
+  const { assetList } = store;
+  const assetMap = {
+    main: '',
+    images: [] as string[],
+    css: [] as string[],
+    fonts: [] as string[],
+    compressed: [] as string[],
+    rest: [] as string[],
+  };
+
+  assetList.forEach((asset: string) => {
+    const item = asset.substr(asset.lastIndexOf('/') + 1);
+    if ((isServer && item === 'index.js') || (!isServer && /^client.+js$/.test(item))) {
+      assetMap.main = item;
+    } else if (/\.(png|jpe?g|gif|svg|ico)$/.test(item)) {
+      assetMap.images.push(item);
+    } else if (/\.css$/.test(item)) {
+      assetMap.css.push(item);
+    } else if (/\.(ttf|woff2?)$/.test(item)) {
+      assetMap.fonts.push(item);
+    } else if (/\.(gz|br)$/.test(item)) {
+      assetMap.compressed.push(item);
+    } else {
+      assetMap.rest.push(item);
+    }
+  });
+
+  console.log();
+  logger.log_(assetMap.main);
+  if (assetMap.images.length > 0) {
+    logger.warn_(`images (${assetMap.images.length})`);
+  }
+  if (assetMap.css.length > 0) {
+    logger.warn_(`css (${assetMap.css.length})`);
+  }
+  if (assetMap.fonts.length > 0) {
+    logger.warn_(`fonts (${assetMap.fonts.length})`);
+  }
+  if (assetMap.compressed.length > 0) {
+    logger.warn_(`compressed (${assetMap.compressed.length})`);
+  }
+  console.log();
+  assetMap.rest.sort();
+  assetMap.rest.forEach(item => {
+    logger.cyan(item);
+  });
+};
 
 export const make = (isServer: boolean) => {
   const files = ['client', 'server', 'done'];
@@ -53,9 +106,32 @@ export const appendLog = (content: string) => {
 };
 
 export const done = (isServer: boolean) => {
+  displayAssets(isServer);
   syncHelper(isServer);
 };
 
 export const run = () => {
   eventCleanup();
+};
+
+// const doneStart = (isServer: boolean) => {
+//   return syncHelper(isServer, ['client-start', 'server-start', 'done-start']);
+// };
+
+export const watchRun = (_isServer?: boolean) => {
+  // doneStart(isServer);
+
+  // let doneEmitted = false;
+  // do {
+  //   sleep(20);
+  //   const donePath = path.resolve(process.cwd(), 'build/.event/done-start');
+  //   doneEmitted = !!readFile(donePath);
+  // } while (!doneEmitted);
+
+  store.cleanup();
+};
+
+export const assetEmitted = (file: string, _content: any) => {
+  // const sizeBytes = content.length;
+  store.addAsset(file);
 };

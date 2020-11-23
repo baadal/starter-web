@@ -52,7 +52,9 @@ const common: ConfigurationFactory = (env: any) => {
   const plugins: Plugin[] = [
     new EventHooksPlugin({
       run: () => event.run(),
+      watchRun: () => event.watchRun(),
       make: () => event.make(isServer),
+      assetEmitted: (f: string, c: any) => event.assetEmitted(f, c),
       done: () => event.done(isServer),
     }),
     new Dotenv({ path: path.resolve(process.cwd(), `env/.env`) }),
@@ -107,7 +109,7 @@ const common: ConfigurationFactory = (env: any) => {
     assets: false,
     entrypoints: false,
     modules: false,
-    chunks: true,
+    chunks: !true,
     children: false
   };
 
