@@ -24,6 +24,15 @@ export interface GenericRequest {
   params?: any;
 }
 
+export interface AllAssetsMap {
+  main: string;
+  images: string[];
+  css: string[];
+  fonts: string[];
+  compressed: string[];
+  rest: string[];
+}
+
 export interface AssetsMap {
   common: string[];
 }

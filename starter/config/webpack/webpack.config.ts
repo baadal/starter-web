@@ -57,7 +57,9 @@ const common = (env: any) => {
   const plugins: WebpackPluginInstance[] = [
     new EventHooksPlugin({
       run: () => event.run(),
+      watchRun: () => event.watchRun(),
       make: () => event.make(isServer),
+      assetEmitted: (f: string, c: any) => event.assetEmitted(f, c),
       done: () => event.done(isServer),
     }),
     new Dotenv({ path: path.resolve(process.cwd(), `custom/env/.env`) }),
@@ -117,7 +119,7 @@ const common = (env: any) => {
     assets: false,
     entrypoints: false,
     modules: false,
-    chunks: true,
+    chunks: !true,
     children: false
   };
 
