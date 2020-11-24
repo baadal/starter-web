@@ -41,6 +41,7 @@
   "exclude": [
     "node_modules",
     "build",
-    "starter/config"
+    "starter/config",
+    "starter/scripts"
   ]
 }
