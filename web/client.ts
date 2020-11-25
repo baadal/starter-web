@@ -1,5 +1,7 @@
+import logger from 'starter/utils/logger';
+
 const client = () => {
-  console.log('Hello from client!');
+  logger.log('Hello from client!');
 }
 
 client();
