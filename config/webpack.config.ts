@@ -87,6 +87,7 @@ const common = (env: any) => {
       extensions: ['.ts', '.js'],
       alias: {
         src: path.resolve(process.cwd(), 'src/'),
+        starter: path.resolve(process.cwd(), 'starter/'),
       },
       ...resolve,
     },

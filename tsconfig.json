@@ -15,6 +15,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
+    "allowJs": false,
     "sourceMap": true,
     "declaration": true,
     "noImplicitAny": true,
@@ -26,12 +27,14 @@
     "removeComments": true,
     "jsx": "react",
     "paths": {
-      "src/*": ["src/*"]
+      "src/*": ["src/*"],
+      "starter/*": ["starter/*"]
     }
   },
   "include": [
     "./src/**/*",
-    "./typings/**/*.d.ts"
+    "./typings/**/*.d.ts",
+    "./starter/**/*"
   ],
   "exclude": [
     "node_modules",
