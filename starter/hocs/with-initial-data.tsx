@@ -17,8 +17,8 @@ function withInitialData<T = any>(Component: React.ComponentType<any>): React.Co
       if (!initialData) {
         this.isSsr = false;
       } else {
-        const { pageData } = initialData;
-        this.state = { pageData };
+        const { pageData, headerData, footerData } = initialData;
+        this.state = { pageData, headerData, footerData };
       }
     }
 
@@ -40,8 +40,8 @@ function withInitialData<T = any>(Component: React.ComponentType<any>): React.Co
       const req = getGenericReqFromLocation(location);
       getInitialData<T>(req).subscribe(initialData => {
         if (initialData) {
-          const { pageData } = initialData;
-          this.setState({ pageData });
+          const { pageData, headerData, footerData } = initialData;
+          this.setState({ pageData, headerData, footerData });
         }
       });
     }
@@ -55,6 +55,8 @@ function withInitialData<T = any>(Component: React.ComponentType<any>): React.Co
         <Component
           {...this.props}
           pageData={this.state?.pageData}
+          headerData={this.state?.headerData}
+          footerData={this.state?.footerData}
           resetInitialData={this.resetInitialData.bind(this)} // eslint-disable-line react/jsx-no-bind
         />
       );
@@ -65,6 +67,8 @@ function withInitialData<T = any>(Component: React.ComponentType<any>): React.Co
 
   interface WithInitialDataState {
     pageData: T | null;
+    headerData: any;
+    footerData: any;
   }
 
   return WithInitialData;

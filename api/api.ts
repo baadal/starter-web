@@ -9,6 +9,8 @@ import { ServerResponse } from './model/response.model';
 import { homeInfo } from './routes/pages/home/home.api';
 import { aboutInfo } from './routes/pages/about/about.api';
 import { notFoundInfo } from './routes/pages/not-found/not-found.api';
+import { headerInfo } from './routes/layouts/header/header.api';
+import { footerInfo } from './routes/layouts/footer/footer.api';
 
 const app = express();
 const PORT = process.env.portApi || 4000;
@@ -41,6 +43,9 @@ const sendResponse = (req: express.Request, res: express.Response, data: any) =>
 app.get('/v1/data/about', (req, res) => sendResponse(req, res, aboutInfo));
 app.get('/v1/data/home', (req, res) => sendResponse(req, res, homeInfo));
 app.get('/v1/data/not-found', (req, res) => sendResponse(req, res, notFoundInfo));
+
+app.get('/v1/data/header', (req, res) => sendResponse(req, res, headerInfo));
+app.get('/v1/data/footer', (req, res) => sendResponse(req, res, footerInfo(req)));
 
 app.get('/', (req, res) => sendResponse(req, res, defaultInfo));
 app.get('/favicon.ico', (req, res) => {
