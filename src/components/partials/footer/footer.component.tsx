@@ -2,14 +2,19 @@ import React from 'react';
 
 import common from 'src/assets/css/common.module.scss';
 
-const Footer = (_props: React.ComponentProps<any>) => {
+const Footer = (props: FooterProps) => {
+  const { footerData } = props;
+  const link = footerData?.externalLinks?.[0];
+
+  if (!link) return null;
+
   return (
     <div className={common.footer}>
       <br />
       <span>
         <span>Built with</span>{' '}
-        <a href="https://starterjs.dev/" target="_blank" rel="noreferrer">
-          Starter.js
+        <a href={link.path} target="_blank" rel="noreferrer">
+          {link.title}
         </a>{' '}
         <small>
           (<code>v{process.env.npm_package_version}</code>)
@@ -18,5 +23,9 @@ const Footer = (_props: React.ComponentProps<any>) => {
     </div>
   );
 };
+
+export interface FooterProps {
+  footerData: any;
+}
 
 export default Footer;

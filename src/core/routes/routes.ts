@@ -17,4 +17,7 @@ const routes: StringIndexable<RouteInfo> = {
   },
 };
 
+export const headerSource = '/v1/data/header';
+export const footerSource = '/v1/data/footer';
+
 export default routes;
