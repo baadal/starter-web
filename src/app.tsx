@@ -46,12 +46,12 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   render() {
-    const { pageData } = this.props;
+    const { pageData, headerData, footerData } = this.props;
     const routes = routesProvider();
 
     return (
       <>
-        <Header />
+        <Header headerData={headerData} />
         <Switch>
           {routes.map(route => (
             <Route
@@ -62,7 +62,7 @@ class App extends React.Component<AppProps, AppState> {
             />
           ))}
         </Switch>
-        <Footer />
+        <Footer footerData={footerData} />
       </>
     );
   }
@@ -70,6 +70,8 @@ class App extends React.Component<AppProps, AppState> {
 
 export interface AppProps extends PropsRoot {
   pageData: any;
+  headerData: any;
+  footerData: any;
   resetInitialData: Function;
 }
 

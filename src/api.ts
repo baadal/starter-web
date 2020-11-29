@@ -65,6 +65,41 @@ const defaultInfo = {
   info: 'starter api endpoint',
 };
 
+const headerInfo = {
+  links: [
+    {
+      path: '/',
+      title: 'Home',
+    },
+    {
+      path: '/about',
+      title: 'About',
+    },
+  ],
+  externalLinks: [
+    {
+      path: 'https://github.com/baadal/starter-web',
+      title: 'GitHub',
+    },
+  ],
+};
+
+const footerInfo = (req: express.Request) => {
+  const resp = {
+    links: [] as any[],
+    externalLinks: [] as any[],
+  };
+
+  if (req.query.path === '/about') {
+    resp.externalLinks.push({
+      path: 'https://starterjs.dev/',
+      title: 'Starter.js',
+    });
+  }
+
+  return resp;
+};
+
 // ------------------------
 
 const sendResponse = (req: express.Request, res: express.Response, data: any) => {
@@ -78,6 +113,10 @@ app.get('/v1/data/demo/css-styles', (req, res) => sendResponse(req, res, cssStyl
 app.get('/v1/data/demo/css-in-js', (req, res) => sendResponse(req, res, cssInJsDemo));
 app.get('/v1/data/home', (req, res) => sendResponse(req, res, homeInfo));
 app.get('/v1/data/not-found', (req, res) => sendResponse(req, res, notFoundInfo));
+
+app.get('/v1/data/header', (req, res) => sendResponse(req, res, headerInfo));
+app.get('/v1/data/footer', (req, res) => sendResponse(req, res, footerInfo(req)));
+
 app.get('/*', (req, res) => sendResponse(req, res, defaultInfo));
 
 app.listen(PORT, () => {

@@ -1,23 +1,33 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import routes from 'src/core/routes/routes';
-
 import styles from 'src/assets/css/common.module.scss';
 
-const Header = (_props: React.ComponentProps<any>) => {
+const Header = (props: HeaderProps) => {
+  const { headerData } = props;
+
   return (
     <div className={styles.header}>
-      <Link to={routes.home.path}>Home</Link>
-      <span>&nbsp;&nbsp;&nbsp;</span>
-      <Link to={routes.about.path}>About</Link>
-      <span>&nbsp;&nbsp;&nbsp;</span>
-      <a href="https://github.com/baadal/starter-web" target="_blank" rel="noreferrer">
-        GitHub
-      </a>
-      <span>&nbsp;&nbsp;&nbsp;</span>
+      {headerData?.links?.map((link: any) => (
+        <span key={link.path}>
+          <Link to={link.path}>{link.title}</Link>
+          <span>&nbsp;&nbsp;&nbsp;</span>
+        </span>
+      ))}
+      {headerData?.externalLinks?.map((link: any) => (
+        <span key={link.path}>
+          <a href={link.path} target="_blank" rel="noreferrer">
+            {link.title}
+          </a>
+          <span>&nbsp;&nbsp;&nbsp;</span>
+        </span>
+      ))}
     </div>
   );
 };
+
+export interface HeaderProps {
+  headerData: any;
+}
 
 export default Header;
