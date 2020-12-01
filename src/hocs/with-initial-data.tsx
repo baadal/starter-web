@@ -46,8 +46,18 @@ function withInitialData<T = any>(Component: React.ComponentType<any>): React.Co
       });
     }
 
+    resetInitialData() {
+      this.setState({ pageData: null });
+    }
+
     render() {
-      return <Component {...this.props} pageData={this.state?.pageData} />;
+      return (
+        <Component
+          {...this.props}
+          pageData={this.state?.pageData}
+          resetInitialData={this.resetInitialData.bind(this)} // eslint-disable-line react/jsx-no-bind
+        />
+      );
     }
   }
 
