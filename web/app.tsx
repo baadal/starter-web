@@ -3,6 +3,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import { UnregisterCallback } from 'history'; // eslint-disable-line
 
 import { routesProvider } from 'starter/core/routes/routes.provider';
+import withInitialData from 'starter/hocs/with-initial-data';
 import Header from 'components/layouts/header/header.component';
 import Footer from 'components/layouts/footer/footer.component';
 import { PropsRoot } from 'model/common.model';
@@ -27,6 +28,7 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   render() {
+    const { pageData } = this.props;
     const routes = routesProvider();
 
     return (
@@ -37,7 +39,7 @@ class App extends React.Component<AppProps, AppState> {
             <Route
               path={route.path}
               exact={route.exact}
-              render={(props: any) => <route.component {...props} />}
+              render={(props: any) => <route.component {...props} pageData={pageData} />}
               key={route.path}
             />
           ))}
@@ -48,8 +50,10 @@ class App extends React.Component<AppProps, AppState> {
   }
 }
 
-export interface AppProps extends PropsRoot {}
+export interface AppProps extends PropsRoot {
+  pageData: any;
+}
 
 export interface AppState {}
 
-export default withRouter(App);
+export default withRouter(withInitialData(App));

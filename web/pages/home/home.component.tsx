@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import routes from 'routes/routes';
-import withInitialData from 'starter/hocs/with-initial-data';
 import { PropsRoot } from 'model/common.model';
 import { HomePageData } from 'model/pagedata.model';
 
@@ -47,7 +46,7 @@ class Home extends React.Component<HomeProps, HomeState> {
   }
 }
 
-export default withInitialData(Home);
+export default Home;
 
 export interface HomeProps extends PropsRoot {
   pageData: HomePageData | null;

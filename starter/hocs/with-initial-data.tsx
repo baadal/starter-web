@@ -1,4 +1,5 @@
 import React from 'react';
+import { Location } from 'history'; // eslint-disable-line
 
 import { extractInitialData } from 'starter/core/services/common.service';
 import { getInitialData } from 'starter/core/services/pages.service';
@@ -25,14 +26,24 @@ function withInitialData<T = any>(Component: React.ComponentType<any>): React.Co
       if (this.isSsr) {
         this.isSsr = false;
       } else {
-        const req = getGenericReqFromLocation(this.props.location);
-        getInitialData<T>(req).subscribe(initialData => {
-          if (initialData) {
-            const { pageData } = initialData;
-            this.setState({ pageData });
-          }
-        });
+        this.loadPageData(this.props.location);
       }
+    }
+
+    componentDidUpdate(prevProps: WithInitialDataProps, _prevState: WithInitialDataState) {
+      if (prevProps.location.pathname !== this.props.location.pathname) {
+        this.loadPageData(this.props.location);
+      }
+    }
+
+    loadPageData(location: Location) {
+      const req = getGenericReqFromLocation(location);
+      getInitialData<T>(req).subscribe(initialData => {
+        if (initialData) {
+          const { pageData } = initialData;
+          this.setState({ pageData });
+        }
+      });
     }
 
     render() {
