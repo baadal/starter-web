@@ -19,6 +19,7 @@ class App extends React.Component<AppProps, AppState> {
         if ((window as any).__initialData__) {
           delete (window as any).__initialData__;
         }
+        this.props.resetInitialData();
       }
     });
   }
@@ -52,6 +53,7 @@ class App extends React.Component<AppProps, AppState> {
 
 export interface AppProps extends PropsRoot {
   pageData: any;
+  resetInitialData: Function;
 }
 
 export interface AppState {}
