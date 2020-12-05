@@ -2,10 +2,33 @@ import path from 'path';
 import { WebpackPluginInstance } from 'webpack';
 import Dotenv from 'dotenv-webpack';
 
+// @ts-ignore
+import CompressionPlugin from 'compression-webpack-plugin';
+
+import { checkServer } from '../../env';
+import { COMPRESSION_FILES_REGEX } from '../../const';
+
 const prodConfig = (env: any) => {
+  const isServer = checkServer();
+
   const plugins: WebpackPluginInstance[] = [
     new Dotenv({ path: path.resolve(process.cwd(), `custom/env/.env.prod`) }),
   ];
+
+  if(!isServer) {
+    plugins.push(
+      new CompressionPlugin({
+        test: COMPRESSION_FILES_REGEX,
+        algorithm: 'gzip',
+        filename: '[path][base].gz',
+      }),
+      new CompressionPlugin({
+        test: COMPRESSION_FILES_REGEX,
+        algorithm: 'brotliCompress',
+        filename: '[path][base].br',
+      })
+    );
+  }
 
   return ({
     mode: 'production',

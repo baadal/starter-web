@@ -188,3 +188,25 @@ export const getUserAgentInfo = (userAgent: string): UserAgentInfo | null => {
 
   return { browser, osName, isMobile };
 };
+
+export const getMimeType = async (urlPath: string) => {
+  let mimeType: string | boolean = false;
+  if (!assetsMimeMap.size) {
+    logger.error('[getMimeType] assetsMimeMap NOT initialized yet!');
+    return mimeType;
+  }
+
+  if (urlPath) {
+    if (assetsMimeMap.has(urlPath)) {
+      mimeType = assetsMimeMap.get(urlPath) || false;
+    } else {
+      logger.warn(`[getMimeType] mimeType missing in assetsMimeMap for asset: ${urlPath}`);
+      mimeType = (await cacheMimeType(urlPath)) || false;
+    }
+  }
+
+  if (!mimeType) {
+    logger.error(`[getMimeType] mimeType NOT found for asset: ${urlPath}`);
+  }
+  return mimeType;
+};
