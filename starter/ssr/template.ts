@@ -26,6 +26,12 @@ export const template = (
     linkTags = '';
   }
 
+  linkTags = `
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap">
+    ${linkTags}
+  `;
+
   const page = `<!DOCTYPE html>
 <html lang="en">
   <head>
