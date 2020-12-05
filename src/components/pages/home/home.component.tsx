@@ -16,7 +16,7 @@ class Home extends React.Component<HomeProps, HomeState> {
     return (
       <>
         <h2 className={styles.heroText}>{title}</h2>
-        <p>{description}</p>
+        <p className={styles.punchline}>{description}</p>
         <ul>
           <li>
             <Link to={routes.cssStylesDemo.path}>Demo: CSS Styles</Link>
