@@ -21,7 +21,7 @@ class Home extends React.Component<HomeProps, HomeState> {
             <span className={common.heroSplit}>&nbsp;&nbsp;&bull;&nbsp;&nbsp;</span>
             <span className={common.heroSubtext}>{title}</span>
           </div>
-          <p>{description}</p>
+          <p className={common.punchline}>{description}</p>
         </div>
         <div className={common.pageDesc}>
           <p>
