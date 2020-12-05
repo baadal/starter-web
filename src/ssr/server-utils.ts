@@ -159,3 +159,20 @@ export const getUserAgentInfo = (userAgent: string): UserAgentInfo | null => {
 
   return { browser, osName, isMobile };
 };
+
+export const getMimeType = (reqUrl: string) => {
+  let mimeType: string | boolean = false;
+  if (!assetsMimeMap.size) {
+    logger.error('[getMimeType] assetsMimeMap NOT initialized yet!');
+    return mimeType;
+  }
+
+  if (reqUrl && assetsMimeMap.has(reqUrl)) {
+    mimeType = assetsMimeMap.get(reqUrl) || false;
+  }
+
+  if (!mimeType) {
+    logger.error(`[getMimeType] mimeType NOT found for asset: ${reqUrl}`);
+  }
+  return mimeType;
+};
