@@ -1,6 +1,14 @@
 @import 'shared/variables';
 @import 'utils/reset';
 
+@font-face {
+  font-family: 'Gloria Hallelujah';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(../fonts/GloriaHallelujah-Regular.ttf) format('truetype');
+}
+
 html {
   font-size: 20px;
 }
