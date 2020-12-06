@@ -1,5 +1,6 @@
 import path from 'path';
 import express from 'express';
+import compression from 'compression';
 
 // @ts-ignore
 import cors from 'cors';
@@ -15,6 +16,7 @@ const PORT = process.env.portApi || 4000;
 app.disable('x-powered-by');
 
 app.use(cors());
+app.use(compression());
 
 app.set('json spaces', 2);
 
