@@ -230,6 +230,14 @@ const common = (env: any) => {
             emit: !isServer,
           },
         },
+        {
+          test: /\.(ttf|woff2?)$/i,
+          type: 'asset/resource',
+          generator: {
+            filename: `fonts/${assetName}`,
+            emit: !isServer,
+          },
+        },
       ]
     },
     watchOptions: {
