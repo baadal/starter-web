@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import http from 'http';
 import express from 'express';
+import compression from 'compression';
 
 // @ts-ignore
 import XMLHttpRequest from 'xhr2';
@@ -71,6 +72,11 @@ if (isProd) {
 
 // serve static assets
 app.use(express.static('build/public'));
+
+// dynamic compression for non-static resources
+if (isProd) {
+  app.use(compression());
+}
 
 // create our own http server rather than using one given by express
 const server = http.createServer(app);
