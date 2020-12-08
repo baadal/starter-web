@@ -1,7 +1,7 @@
 import serialize from 'serialize-javascript';
 
 import { checkProd } from 'starter/utils/env';
-import { getPublicPath, getAssetsData } from 'starter/ssr/server-utils';
+import { getPublicPath, getAssetsData, getFontList } from 'starter/ssr/server-utils';
 import { getTagsFromElems } from 'starter/ssr/utils';
 import { ScriptElem, LinkElem, StyleElem } from 'starter/core/model/ssr.model';
 import { InitialData } from 'starter/core/model/response.model';
@@ -31,12 +31,18 @@ export const template = (
 
   let criticalCss = '';
   let linkTags = '';
+  let fontLinks = '';
 
   const scriptTags = getTagsFromElems(scriptElems);
 
   if (isProd) {
     criticalCss = `<style>${styleElems.map(el => getAssetsData(el.props.href)).join(' ')}</style>`;
     linkTags = getTagsFromElems(linkElems);
+
+    // Ref: https://medium.com/reloading/preload-prefetch-and-priorities-in-chrome-776165961bbf
+    fontLinks = getFontList()
+      .map(f => `<link rel="preload" as="font" href="${publicPath}${f}" crossorigin="anonymous">`)
+      .join('\n');
   }
 
   const page = `<!DOCTYPE html>
@@ -48,6 +54,7 @@ export const template = (
     ${scriptTop}
     ${criticalCss}
     ${linkTags}
+    ${fontLinks}
     <title>${title}</title>
   </head>
   <body>
