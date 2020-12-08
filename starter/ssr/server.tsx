@@ -6,6 +6,7 @@ import { ChunkExtractor } from '@loadable/server';
 
 import App from 'web/app';
 import { InitialData } from 'starter/core/model/response.model';
+import { StyleElem } from 'starter/core/model/ssr.model';
 
 export const serverRender = (url: string, initialData: InitialData | null) => {
   const statsFile = path.resolve(process.cwd(), 'build/loadable-stats.json');
@@ -23,8 +24,8 @@ export const serverRender = (url: string, initialData: InitialData | null) => {
   );
 
   const scriptTags = extractor.getScriptTags();
-  const styleTags = extractor.getStyleTags();
+  const styleElems = extractor.getStyleElements().map(({ type, props }) => ({ type, props })) as StyleElem[];
   const linkTags = extractor.getLinkTags();
 
-  return { content, scriptTags, styleTags, linkTags };
+  return { content, scriptTags, styleElems, linkTags };
 };
