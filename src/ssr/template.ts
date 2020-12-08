@@ -2,13 +2,14 @@ import serialize from 'serialize-javascript';
 
 import { checkProd } from 'src/utils/env.utils';
 import { getPublicPath, getAssetsData } from 'src/ssr/server-utils';
+import { StyleElem } from 'src/core/models/ssr.model';
 import { InitialData } from 'src/core/models/response.model';
 
 export const template = (
   content: string,
   scriptTags: string,
   linkTags: string,
-  styleTags: string,
+  styleElems: StyleElem[],
   initialData: InitialData | null
 ) => {
   const isProd = checkProd();
@@ -23,9 +24,12 @@ export const template = (
 
   const scriptTop = `<script>${getAssetsData('scriptTop.js')}</script>`;
 
-  if (!isProd) {
+  let criticalCss = '';
+
+  if (isProd) {
+    criticalCss = `<style>${styleElems.map(el => getAssetsData(el.props.href)).join(' ')}</style>`;
+  } else {
     linkTags = '';
-    styleTags = '';
   }
 
   const page = `<!DOCTYPE html>
@@ -34,9 +38,9 @@ export const template = (
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="${description}">
     <link rel="shortcut icon" type="image/x-icon" href="${publicPath}favicon.ico" />
+    ${criticalCss}
     ${scriptTop}
     ${linkTags}
-    ${styleTags}
     <title>${title}</title>
   </head>
   <body>
