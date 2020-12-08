@@ -23,3 +23,7 @@ export interface GenericRequest {
   query?: StringIndexable<any>;
   params?: any;
 }
+
+export interface AssetsMap {
+  common: string[];
+}

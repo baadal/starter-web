@@ -35,7 +35,8 @@
   "include": [
     "./src/**/*",
     "./api/**/*",
-    "./starter/**/*"
+    "./starter/**/*",
+    "./custom/**/*"
   ],
   "exclude": [
     "node_modules",
