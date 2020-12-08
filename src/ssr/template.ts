@@ -3,13 +3,14 @@ import serialize from 'serialize-javascript';
 import env from 'src/const/env.values';
 import { checkProd } from 'src/utils/env.utils';
 import { getJsAssetName, getAssetsData } from 'src/ssr/server-utils';
-import { StyleElem } from 'src/core/models/ssr.model';
+import { getTagsFromElems } from 'src/ssr/utils';
+import { ScriptElem, LinkElem, StyleElem } from 'src/core/models/ssr.model';
 import { InitialData } from 'src/core/models/response.model';
 
 export const template = (
   content: string,
-  scriptTags: string,
-  linkTags: string,
+  scriptElems: ScriptElem[],
+  linkElems: LinkElem[],
   styleElems: StyleElem[],
   initialData: InitialData | null
 ) => {
@@ -24,12 +25,14 @@ export const template = (
 
   let scriptTop = '';
   let criticalCss = '';
+  let linkTags = '';
+
+  const scriptTags = getTagsFromElems(scriptElems);
 
   if (isProd) {
     scriptTop = `<script>${getAssetsData(`/${getJsAssetName('scriptTop')}`)}</script>`;
     criticalCss = `<style>${styleElems.map(el => getAssetsData(el.props.href)).join(' ')}</style>`;
-  } else {
-    linkTags = '';
+    linkTags = getTagsFromElems(linkElems);
   }
 
   const page = `<!DOCTYPE html>
