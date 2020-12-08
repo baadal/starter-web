@@ -1,7 +1,7 @@
 import serialize from 'serialize-javascript';
 
 import { checkProd } from 'src/utils/env.utils';
-import { getPublicPath } from 'src/ssr/server-utils';
+import { getPublicPath, getAssetsData } from 'src/ssr/server-utils';
 import { InitialData } from 'src/core/models/response.model';
 
 export const template = (
@@ -21,6 +21,8 @@ export const template = (
   const title = initialData?.pageData?.seo?.title || defaultTitle;
   const description = initialData?.pageData?.seo?.description || defaultDescription;
 
+  const scriptTop = `<script>${getAssetsData('scriptTop.js')}</script>`;
+
   if (!isProd) {
     linkTags = '';
     styleTags = '';
@@ -32,6 +34,7 @@ export const template = (
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="${description}">
     <link rel="shortcut icon" type="image/x-icon" href="${publicPath}favicon.ico" />
+    ${scriptTop}
     ${linkTags}
     ${styleTags}
     <title>${title}</title>
