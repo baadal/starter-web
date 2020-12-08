@@ -42,7 +42,8 @@
   "include": [
     "./api/**/*",
     "./web/**/*",
-    "./starter/**/*"
+    "./starter/**/*",
+    "./custom/**/*"
   ],
   "exclude": [
     "node_modules",

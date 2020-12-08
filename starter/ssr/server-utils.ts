@@ -5,11 +5,23 @@ import { readFile } from 'starter/lib/file-io';
 import browserMap from 'starter/ssr/browser-map';
 import { uaParserMap, assetsDataMap, assetsMimeMap, cjsStatsCache, etcStatsCache } from 'starter/ssr/server-state';
 import { assertStatsJson, getStatsJson, getFileMimeType } from 'starter/utils/utils';
+import { AssetsMap } from 'starter/core/model/common.model';
 import { BrowserInfo, UserAgentInfo } from 'starter/core/model/ssr.model';
 import logger from 'starter/utils/logger';
 
 export const getPublicPath = () => {
   return cjsStatsCache.get('publicPath') || '/';
+};
+
+const publicParts = (url: string) => {
+  const publicPath = getPublicPath();
+  if (!url?.startsWith(publicPath)) {
+    return null;
+  }
+
+  const pubPath = publicPath;
+  const urlPath = url.substr(publicPath.length);
+  return { pubPath, urlPath };
 };
 
 const initUaParserMap = () => {
@@ -37,7 +49,9 @@ const initStatsCache = () => {
   const publicPath = statsJson.publicPath || '/';
   statsCache.set('publicPath', publicPath);
 
-  const assetsMap = {};
+  const assetsMap: AssetsMap = {
+    common: ['scriptTop.js'],
+  };
   etcStatsCache.set('assetsMap', assetsMap);
 };
 
@@ -45,7 +59,10 @@ const initAssetsDataMap = () => {
   const assetList = Object.values(cjsStatsCache.get('assetsByChunkName') || {}).flat() as string[];
   const styleAssetList = assetList.filter(assetName => /\.css$/.test(assetName));
 
-  const dataAssetList = [...styleAssetList];
+  const assetsMap: AssetsMap = etcStatsCache.get('assetsMap') || {};
+  const jsAssetList = assetsMap.common;
+
+  const dataAssetList = [...styleAssetList, ...jsAssetList];
   dataAssetList.forEach((assetName: string) => {
     const assetFile = path.resolve(process.cwd(), `build/public/${assetName}`);
     const assetData = readFile(assetFile) || '';
@@ -90,6 +107,25 @@ export const initWebServer = async () => {
 
 export const initApiServer = () => {
   initUaParserMap();
+};
+
+export const getAssetsData = (assetPath: string) => {
+  if (!assetsDataMap.size) {
+    logger.error('[getAssetsData] assetsDataMap NOT initialized yet!');
+    return '';
+  }
+
+  let urlPath = assetPath;
+  if (assetPath.startsWith('/') || /^https?:/.test(assetPath)) {
+    const parts = publicParts(assetPath);
+    if (!parts) {
+      logger.error(`[getAssetsData] Unexpected url: ${assetPath}`);
+      return '';
+    }
+    urlPath = parts.urlPath;
+  }
+
+  return assetsDataMap.get(urlPath) || '';
 };
 
 const getCaniuseName = (uaParseName: string, android?: boolean) => {
