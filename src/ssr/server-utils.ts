@@ -114,6 +114,18 @@ export const getAssetsData = (assetPath: string) => {
   return assetsDataMap.get(pathname) || '';
 };
 
+export const getFontList = () => {
+  if (!cjsStatsCache.size) {
+    logger.error('[getFontList] cjsStatsCache NOT initialized yet!');
+    return [];
+  }
+  const fontList = cjsStatsCache
+    .get('assets')
+    .map((f: any) => f.name)
+    .filter((f: any) => /\.(ttf|woff2?)/.test(f));
+  return (fontList || []) as string[];
+};
+
 const getCaniuseName = (uaParseName: string, android?: boolean) => {
   let label = '';
   if (!uaParserMap.size) {

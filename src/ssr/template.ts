@@ -2,7 +2,7 @@ import serialize from 'serialize-javascript';
 
 import env from 'src/const/env.values';
 import { checkProd } from 'src/utils/env.utils';
-import { getJsAssetName, getAssetsData } from 'src/ssr/server-utils';
+import { getJsAssetName, getAssetsData, getFontList } from 'src/ssr/server-utils';
 import { getTagsFromElems } from 'src/ssr/utils';
 import { ScriptElem, LinkElem, StyleElem } from 'src/core/models/ssr.model';
 import { InitialData } from 'src/core/models/response.model';
@@ -28,6 +28,7 @@ export const template = (
   let scriptBottom = '';
   let criticalCss = '';
   let linkTags = '';
+  let fontLinks = '';
 
   const scriptTags = getTagsFromElems(scriptElems);
 
@@ -36,6 +37,9 @@ export const template = (
     scriptBottom = `<script>${getAssetsData(`/${getJsAssetName('scriptBottom')}`)}</script>`;
     criticalCss = `<style>${styleElems.map(el => getAssetsData(el.props.href)).join(' ')}</style>`;
     linkTags = getTagsFromElems(linkElems);
+    fontLinks = getFontList()
+      .map(f => `<link rel="prefetch" as="font" href="${env.assetsBaseUrl}/${f}" crossorigin>`)
+      .join('\n');
   }
 
   const page = `<!DOCTYPE html>
@@ -47,6 +51,7 @@ export const template = (
     ${criticalCss}
     ${scriptTop}
     ${linkTags}
+    ${fontLinks}
     <title>${title}</title>
   </head>
   <body>
