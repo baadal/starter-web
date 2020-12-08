@@ -2,12 +2,13 @@ import serialize from 'serialize-javascript';
 
 import { checkProd } from 'starter/env';
 import { getPublicPath, getAssetsData } from 'src/ssr/server-utils';
+import { StyleElem } from 'src/core/models/ssr.model';
 import { InitialData } from 'src/core/models/response.model';
 
 export const template = (
   content: string,
   scriptTags: string,
-  styleTags: string,
+  styleElems: StyleElem[],
   linkTags: string,
   initialData: InitialData | null
 ) => {
@@ -26,8 +27,11 @@ export const template = (
   const scriptTop = topScriptBody ? `<script>${topScriptBody}</script>` : '';
   const scriptBottom = bottomScriptBody ? `<script>${bottomScriptBody}</script>` : '';
 
-  if (!isProd) {
-    styleTags = '';
+  let criticalCss = '';
+
+  if (isProd) {
+    criticalCss = `<style>${styleElems.map(el => getAssetsData(el.props.href)).join(' ')}</style>`;
+  } else {
     linkTags = '';
   }
 
@@ -38,7 +42,7 @@ export const template = (
     <meta name="description" content="${description}">
     <link rel="shortcut icon" type="image/x-icon" href="${publicPath}favicon.ico" />
     ${scriptTop}
-    ${styleTags}
+    ${criticalCss}
     ${linkTags}
     <title>${title}</title>
   </head>

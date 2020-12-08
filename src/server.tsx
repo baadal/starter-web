@@ -5,6 +5,7 @@ import { StaticRouter } from 'react-router-dom';
 import { ChunkExtractor } from '@loadable/server';
 
 import { InitialData } from 'src/core/models/response.model';
+import { StyleElem } from 'src/core/models/ssr.model';
 import App from './app';
 
 export const serverRender = (url: string, initialData: InitialData | null) => {
@@ -23,8 +24,8 @@ export const serverRender = (url: string, initialData: InitialData | null) => {
   );
 
   const scriptTags = extractor.getScriptTags();
-  const styleTags = extractor.getStyleTags();
+  const styleElems = extractor.getStyleElements().map(({ type, props }) => ({ type, props })) as StyleElem[];
   const linkTags = extractor.getLinkTags();
 
-  return { content, scriptTags, styleTags, linkTags };
+  return { content, scriptTags, styleElems, linkTags };
 };
