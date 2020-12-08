@@ -4,7 +4,7 @@ import UAParser from 'ua-parser-js';
 import { readFile } from 'starter/lib/file-io';
 import browserMap from 'src/ssr/browser-map';
 import { uaParserMap, assetsDataMap, assetsMimeMap, cjsStatsCache } from 'src/ssr/server-state';
-import { assertStatsJson, getStatsJson, getFileMimeType } from 'starter/utils';
+import { assertStatsJson, getStatsJson, getFileMimeType, urlParts } from 'starter/utils';
 import { BrowserInfo, UserAgentInfo } from 'src/core/models/ssr.model';
 import logger from 'starter/logger';
 
@@ -90,6 +90,28 @@ export const initWebServer = async () => {
 
 export const initApiServer = () => {
   initUaParserMap();
+};
+
+export const getJsAssetName = (chunkName: string) => {
+  if (!cjsStatsCache.size) {
+    logger.error('[getJsAssetName] cjsStatsCache NOT initialized yet!');
+    return '';
+  }
+
+  let asset = cjsStatsCache.get('assetsByChunkName')[chunkName];
+  if (Array.isArray(asset)) {
+    asset = asset.find(t => /\.js$/.test(t));
+  }
+  return asset || '';
+};
+
+export const getAssetsData = (assetPath: string) => {
+  const { pathname } = urlParts(assetPath);
+  if (!assetsDataMap.size) {
+    logger.error('[getAssetsData] assetsDataMap NOT initialized yet!');
+    return '';
+  }
+  return assetsDataMap.get(pathname) || '';
 };
 
 const getCaniuseName = (uaParseName: string, android?: boolean) => {

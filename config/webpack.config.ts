@@ -166,7 +166,8 @@ const common: ConfigurationFactory = (env: any) => {
       'whatwg-fetch',
       'intersection-observer',
       './src/client.tsx'
-    ]
+    ],
+    scriptTop: './starter/script-top.ts'
   };
 
   return ({
