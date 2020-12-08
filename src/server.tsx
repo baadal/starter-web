@@ -4,8 +4,9 @@ import ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { ChunkExtractor } from '@loadable/server';
 
+import { filterLinkElems } from 'src/ssr/utils';
 import { InitialData } from 'src/core/models/response.model';
-import { StyleElem } from 'src/core/models/ssr.model';
+import { ScriptElem, LinkElem, StyleElem } from 'src/core/models/ssr.model';
 import App from './app';
 
 export const serverRender = (url: string, initialData: InitialData | null) => {
@@ -23,9 +24,12 @@ export const serverRender = (url: string, initialData: InitialData | null) => {
     )
   );
 
-  const scriptTags = extractor.getScriptTags();
-  const styleElems = extractor.getStyleElements().map(({ type, props }) => ({ type, props })) as StyleElem[];
-  const linkTags = extractor.getLinkTags();
+  const scriptElems = extractor.getScriptElements().map(({ type, props }) => ({ type, props })) as ScriptElem[];
 
-  return { content, scriptTags, styleElems, linkTags };
+  const styleElems = extractor.getStyleElements().map(({ type, props }) => ({ type, props })) as StyleElem[];
+
+  let linkElems = extractor.getLinkElements().map(({ type, props }) => ({ type, props })) as LinkElem[];
+  linkElems = filterLinkElems(linkElems, styleElems);
+
+  return { content, scriptElems, styleElems, linkElems };
 };
