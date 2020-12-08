@@ -143,6 +143,11 @@ export const getAssetsData = (assetPath: string) => {
   return assetsDataMap.get(urlPath) || '';
 };
 
+export const getFontList = () => {
+  const assetsMap: AssetsMap = etcStatsCache.get('assetsMap') || {};
+  return assetsMap.fonts || [];
+};
+
 const getCaniuseName = (uaParseName: string, android?: boolean) => {
   let label = '';
   if (!uaParserMap.size) {
