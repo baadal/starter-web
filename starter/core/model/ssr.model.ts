@@ -6,6 +6,8 @@ export interface DomElem {
 }
 
 export type StyleElem = DomElem;
+export type LinkElem = DomElem;
+export type ScriptElem = DomElem;
 
 export interface BrowserInfo {
   name?: string;

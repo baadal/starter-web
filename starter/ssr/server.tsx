@@ -5,8 +5,9 @@ import { StaticRouter } from 'react-router-dom';
 import { ChunkExtractor } from '@loadable/server';
 
 import App from 'web/app';
+import { filterLinkElems } from 'starter/ssr/utils';
 import { InitialData } from 'starter/core/model/response.model';
-import { StyleElem } from 'starter/core/model/ssr.model';
+import { ScriptElem, LinkElem, StyleElem } from 'starter/core/model/ssr.model';
 
 export const serverRender = (url: string, initialData: InitialData | null) => {
   const statsFile = path.resolve(process.cwd(), 'build/loadable-stats.json');
@@ -23,9 +24,12 @@ export const serverRender = (url: string, initialData: InitialData | null) => {
     )
   );
 
-  const scriptTags = extractor.getScriptTags();
-  const styleElems = extractor.getStyleElements().map(({ type, props }) => ({ type, props })) as StyleElem[];
-  const linkTags = extractor.getLinkTags();
+  const scriptElems = extractor.getScriptElements().map(({ type, props }) => ({ type, props })) as ScriptElem[];
 
-  return { content, scriptTags, styleElems, linkTags };
+  const styleElems = extractor.getStyleElements().map(({ type, props }) => ({ type, props })) as StyleElem[];
+
+  let linkElems = extractor.getLinkElements().map(({ type, props }) => ({ type, props })) as LinkElem[];
+  linkElems = filterLinkElems(linkElems, styleElems);
+
+  return { content, scriptElems, styleElems, linkElems };
 };
