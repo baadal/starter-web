@@ -1,4 +1,5 @@
 import { EnvValues } from 'src/core/models/common.model';
+import { checkProd, checkServer } from 'starter/env';
 
 const values: EnvValues = {
   port: process.env.PORT || '',
@@ -8,6 +9,9 @@ const values: EnvValues = {
   assetsBaseUrl: process.env.ASSETS_BASE_URL || '',
 };
 
+const isProd = checkProd();
+const isServer = checkServer();
+
 if (!values.apiBaseUrl) {
   if (typeof window !== 'undefined' && window.location.origin.includes(values.port)) {
     values.apiBaseUrl = window.location.origin.replace(values.port, values.portApi);
@@ -16,5 +20,9 @@ if (!values.apiBaseUrl) {
   }
 }
 values.apiBasePublicUrl = values.apiBaseUrl;
+
+if (isProd && isServer) {
+  values.apiBaseUrl = `http://localhost:${values.portApi}`;
+}
 
 export default values;
