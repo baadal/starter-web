@@ -167,7 +167,8 @@ const common: ConfigurationFactory = (env: any) => {
       'intersection-observer',
       './src/client.tsx'
     ],
-    scriptTop: './starter/script-top.ts'
+    scriptTop: './starter/script-top.ts',
+    scriptBottom: './starter/script-bottom.ts'
   };
 
   return ({

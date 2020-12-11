@@ -24,6 +24,7 @@ export const template = (
   const description = initialData?.pageData?.seo?.description || defaultDescription;
 
   let scriptTop = '';
+  let scriptBottom = '';
   let criticalCss = '';
   let linkTags = '';
 
@@ -31,6 +32,7 @@ export const template = (
 
   if (isProd) {
     scriptTop = `<script>${getAssetsData(`/${getJsAssetName('scriptTop')}`)}</script>`;
+    scriptBottom = `<script>${getAssetsData(`/${getJsAssetName('scriptBottom')}`)}</script>`;
     criticalCss = `<style>${styleElems.map(el => getAssetsData(el.props.href)).join(' ')}</style>`;
     linkTags = getTagsFromElems(linkElems);
   }
@@ -50,6 +52,7 @@ export const template = (
     <div id="root">${content}</div>
     ${declareInitialData}
     ${scriptTags}
+    ${scriptBottom}
   </body>
 </html>`;
 
