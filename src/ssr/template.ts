@@ -24,6 +24,7 @@ export const template = (
   const description = initialData?.pageData?.seo?.description || defaultDescription;
 
   const scriptTop = `<script>${getAssetsData('scriptTop.js')}</script>`;
+  const scriptBottom = `<script>${getAssetsData('scriptBottom.js')}</script>`;
 
   let criticalCss = '';
   let linkTags = '';
@@ -50,6 +51,7 @@ export const template = (
     <div id="root">${content}</div>
     ${declareInitialData}
     ${scriptTags}
+    ${scriptBottom}
   </body>
 </html>`;
 

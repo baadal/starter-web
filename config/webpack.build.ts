@@ -8,6 +8,7 @@ const config: webpack.Configuration = {
   mode: 'production',
   entry: {
     scriptTop: './starter/script-top.ts',
+    scriptBottom: './starter/script-bottom.ts',
   },
   output: {
     filename: '[name].js',
