@@ -37,6 +37,19 @@ class Home extends React.Component<HomeProps, HomeState> {
             <Link to="/demo/broken-link">Demo: Broken Link</Link>
           </li>
         </ul>
+        <p className={styles.punchline}>Performance</p>
+        <ul>
+          <li>
+            <a href="https://web.dev/measure/" target="_blank" rel="noreferrer">
+              Lighthouse
+            </a>
+          </li>
+          <li>
+            <a href="https://gtmetrix.com/" target="_blank" rel="noreferrer">
+              GTmetrix
+            </a>
+          </li>
+        </ul>
       </>
     );
   }
