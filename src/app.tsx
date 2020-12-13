@@ -7,6 +7,7 @@ import Header from 'src/components/partials/header/header.component';
 import Footer from 'src/components/partials/footer/footer.component';
 import { routesProvider } from 'src/core/routes/routes.provider';
 import { PropsRoot } from 'src/core/models/common.model';
+import logger from 'starter/logger';
 
 import 'src/assets/css/global.scss';
 
@@ -22,6 +23,22 @@ class App extends React.Component<AppProps, AppState> {
         this.props.resetInitialData();
       }
     });
+  }
+
+  componentDidUpdate(prevProps: AppProps) {
+    if (this.props.pageData && this.props.pageData !== prevProps.pageData) {
+      const { title, description } = this.props.pageData.seo || {};
+      if (title) {
+        document.title = title;
+      } else {
+        logger.warn('SEO: page title missing!');
+      }
+      if (description) {
+        document.querySelector('meta[name="description"]')?.setAttribute('content', description);
+      } else {
+        logger.warn('SEO: meta description missing!');
+      }
+    }
   }
 
   componentWillUnmount() {
