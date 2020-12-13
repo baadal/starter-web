@@ -4,6 +4,7 @@ import { UnregisterCallback } from 'history'; // eslint-disable-line
 
 import { routesProvider } from 'starter/core/routes/routes.provider';
 import withInitialData from 'starter/hocs/with-initial-data';
+import logger from 'starter/utils/logger';
 import Header from 'components/layouts/header/header.component';
 import Footer from 'components/layouts/footer/footer.component';
 import { PropsRoot } from 'model/common.model';
@@ -22,6 +23,22 @@ class App extends React.Component<AppProps, AppState> {
         this.props.resetInitialData();
       }
     });
+  }
+
+  componentDidUpdate(prevProps: AppProps) {
+    if (this.props.pageData && this.props.pageData !== prevProps.pageData) {
+      const { title, description } = this.props.pageData.seo || {};
+      if (title) {
+        document.title = title;
+      } else {
+        logger.warn('SEO: page title missing!');
+      }
+      if (description) {
+        document.querySelector('meta[name="description"]')?.setAttribute('content', description);
+      } else {
+        logger.warn('SEO: meta description missing!');
+      }
+    }
   }
 
   componentWillUnmount() {
