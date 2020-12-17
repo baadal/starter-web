@@ -45,6 +45,13 @@ export const routesData: RouteData[] = [
     source: routes.fibonacciDemo.source,
   },
   {
+    path: routes.esnextDemo.path,
+    component: loadable(
+      () => import(/* webpackChunkName: "demo", webpackPrefetch: true */ 'src/components/pages/demo/esnext/esnext.component') // eslint-disable-line
+    ),
+    source: routes.esnextDemo.source,
+  },
+  {
     path: routes.home.path,
     component: loadable(
       () => import(/* webpackChunkName: "home", webpackPrefetch: true */ 'src/components/pages/home/home.component')

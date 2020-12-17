@@ -26,6 +26,7 @@ export type HomePageData = PageDataRoot;
 export type AboutPageData = PageDataRoot;
 export type CssStylesDemoData = PageDataRoot;
 export type CssInJsDemoData = PageDataRoot;
+export type EsnextDemoData = PageDataRoot;
 
 export interface NotFoundPageData extends PageDataRoot {
   message: string;
