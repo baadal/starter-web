@@ -22,6 +22,10 @@ const routes: StringIndexable<RouteInfo> = {
     path: '/demo/fibonacci/:p',
     source: '/v1/data/demo/fibonacci/$p',
   },
+  esnextDemo: {
+    path: '/demo/esnext',
+    source: '/v1/data/demo/esnext',
+  },
   home: {
     path: '/',
     source: '/v1/data/home',
