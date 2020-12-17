@@ -35,6 +35,11 @@ export const routesData: RouteData[] = [
     source: routes.fibonacciDemo.source,
   },
   {
+    path: routes.esnextDemo.path,
+    component: loadable(() => import(/* webpackChunkName: "demo" */ 'src/components/pages/demo/esnext/esnext.component')),
+    source: routes.esnextDemo.source,
+  },
+  {
     path: routes.home.path,
     component: loadable(() => import(/* webpackChunkName: "home" */ 'src/components/pages/home/home.component')),
     source: routes.home.source,

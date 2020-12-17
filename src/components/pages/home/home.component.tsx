@@ -33,6 +33,9 @@ class Home extends React.Component<HomeProps, HomeState> {
             <Link to="/demo/fibonacci/10">Demo: Parameterized Routing</Link>
           </li>
           <li>
+            <Link to={routes.esnextDemo.path}>Demo: ES6+ Features &amp; Web APIs</Link>
+          </li>
+          <li>
             <Link to="/demo/broken-link">Demo: Broken Link</Link>
           </li>
         </ul>
