@@ -47,6 +47,7 @@
     "blist:coverage": "npx browserslist --coverage",
     "blist:update": "npx browserslist@latest --update-db",
     "check-env": "node -e 'console.log(process.env)' | grep npm",
+    "check": "es-check es5 'build/public/**/*.js'",
     "cloc": "npx cloc --exclude-list-file=.clocignore --exclude-dir=$(tr '\\n' ',' < .clocignore) ."
   },
   "repository": {
@@ -100,6 +101,7 @@
     "css-loader": "^5.0.1",
     "cssnano": "^4.1.10",
     "dotenv-webpack": "^4.0.0",
+    "es-check": "^5.1.4",
     "eslint": "^7.11.0",
     "eslint-config-airbnb-typescript": "^11.2.1",
     "eslint-config-prettier": "^6.13.0",
