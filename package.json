@@ -48,6 +48,7 @@
     "blist:update": "npx browserslist@latest --update-db",
     "check-env": "node -e 'console.log(process.env)' | grep npm",
     "check": "es-check es5 'build/public/**/*.js'",
+    "check:deps": "are-you-es5 check .",
     "cloc": "npx cloc --exclude-list-file=.clocignore --exclude-dir=$(tr '\\n' ',' < .clocignore) ."
   },
   "repository": {
@@ -91,6 +92,7 @@
     "@types/webpack-node-externals": "^2.5.0",
     "@typescript-eslint/eslint-plugin": "^4.4.1",
     "@typescript-eslint/parser": "^4.4.1",
+    "are-you-es5": "^2.1.1",
     "autoprefixer": "^10.0.2",
     "babel-loader": "^8.1.0",
     "browserslist": "^4.14.7",
