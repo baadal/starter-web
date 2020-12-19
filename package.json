@@ -54,6 +54,7 @@
     "ncuu": "ncu -u",
     "check-env": "node -e 'console.log(process.env)' | grep npm",
     "check": "es-check es5 'build/public/**/*.js'",
+    "check:deps": "are-you-es5 check .",
     "cloc": "npx cloc --exclude-list-file=.clocignore --exclude-dir=$(tr '\\n' ',' < .clocignore) ."
   },
   "repository": {
@@ -92,6 +93,7 @@
     "@types/webpack-bundle-analyzer": "^4.4.0",
     "@typescript-eslint/eslint-plugin": "^4.28.1",
     "@typescript-eslint/parser": "^4.28.1",
+    "are-you-es5": "^2.1.1",
     "babel-loader": "^8.2.2",
     "browserslist": "^4.16.6",
     "cloc": "^2.8.0",
