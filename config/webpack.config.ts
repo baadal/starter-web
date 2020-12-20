@@ -55,7 +55,6 @@ const common: ConfigurationFactory = (env: any) => {
       make: () => event.make(isServer),
       done: () => event.done(isServer),
     }),
-    new webpack.ProgressPlugin(),
     new Dotenv({ path: path.resolve(process.cwd(), `env/.env`) }),
     new webpack.EnvironmentPlugin({
       npm_package_version: '',
