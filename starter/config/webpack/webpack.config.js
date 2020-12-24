@@ -28,7 +28,12 @@ const common = (env) => {
     resolve.fallback = { fs: false }; // Don't provide node module polyfills in non-node environment
   }
 
-  const plugins = [];
+  const plugins = [
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'development', // use 'development' unless process.env.NODE_ENV is defined
+      PLATFORM: '',
+    }),
+  ];
 
   if (isServer) {
     plugins.push(new webpack.optimize.LimitChunkCountPlugin({
