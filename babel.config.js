@@ -1,3 +1,8 @@
+// const envUtils = require('./starter/utils/env');
+
+// const isProd = envUtils.checkProd();
+// const isServer = envUtils.checkServer();
+
 module.exports = {
   presets: [
     [
@@ -6,6 +11,7 @@ module.exports = {
         useBuiltIns: "usage",
         corejs: { version: 3, proposals: true },
         shippedProposals: true,
+        // debug: !isProd && !isServer,
       }
     ],
     "@babel/preset-typescript"
