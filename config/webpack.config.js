@@ -78,6 +78,15 @@ const common = (env) => {
       extensions: ['.js'],
       ...resolve,
     },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          use: 'babel-loader',
+          exclude: /node_modules/,
+        },
+      ]
+    },
     watchOptions: {
       ignored: /node_modules/,
     },
