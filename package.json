@@ -22,6 +22,9 @@
     "blame": "git log -S",
     "hist": "git log --oneline | grep -i",
     "follow": "git log --follow",
+    "blist": "npx browserslist",
+    "blist:coverage": "npx browserslist --coverage",
+    "blist:update": "npx browserslist@latest --update-db",
     "ncu": "ncu",
     "ncuu": "ncu -u",
     "check-env": "node -e 'console.log(process.env)' | grep npm"
@@ -32,6 +35,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "browserslist": "^4.16.6",
     "cross-env": "^7.0.3",
     "nodemon": "^2.0.8",
     "npm-check-updates": "^11.7.1",
@@ -42,5 +46,16 @@
     "webpack-cli": "^4.7.2",
     "webpack-merge": "^5.8.0",
     "webpack-node-externals": "^3.0.0"
-  }
+  },
+  "browserslist": [
+    "cover 97%",
+    "chrome >= 23",
+    "firefox >= 21",
+    "edge >= 12",
+    "safari >= 6",
+    "ios_saf >= 6",
+    "opera >= 15",
+    "not ie 11",
+    "not dead"
+  ]
 }
