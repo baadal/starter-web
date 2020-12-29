@@ -173,7 +173,11 @@ const common = (env: any) => {
   const entry: Entry = isServer ? {
     index: './web/index.ts'
   } : {
-    client: './web/client.tsx'
+    client: [
+      'whatwg-fetch',
+      'intersection-observer',
+      './web/client.tsx'
+    ]
   };
 
   let config: Configuration = {
