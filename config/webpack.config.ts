@@ -162,7 +162,11 @@ const common: ConfigurationFactory = (env: any) => {
   const entry: Entry = isServer ? {
     index: './src/index.ts'
   } : {
-    client: './src/client.tsx'
+    client: [
+      'whatwg-fetch',
+      'intersection-observer',
+      './src/client.tsx'
+    ]
   };
 
   return ({
