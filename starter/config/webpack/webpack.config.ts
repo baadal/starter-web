@@ -73,6 +73,9 @@ const common = (env: any) => {
       PLATFORM: '',
       MODERN: '',
     }),
+    new webpack.NormalModuleReplacementPlugin(/IMPORT_POLYFILLS/, (resource: any) => {
+      resource.request = resource.request.replace('IMPORT_POLYFILLS', `polyfills-${isModern ? 'modern' : 'legacy'}`);
+    }),
     new MiniCssExtractPlugin({
       filename: `css/${miniCssFileName}`,
       chunkFilename: `css/${miniCssChunkName}`,
@@ -193,12 +196,20 @@ const common = (env: any) => {
     return loaders;
   };
 
+  const modernPolyfills: string[] = [
+    'intersection-observer',
+  ];
+
+  const legacyPolyfills: string[] = [
+    'whatwg-fetch',
+    ...modernPolyfills
+  ];
+
   const entry: Entry = isServer ? {
     index: './web/index.ts'
   } : {
     client: [
-      'whatwg-fetch',
-      'intersection-observer',
+      ...(isModern ? modernPolyfills : legacyPolyfills),
       './web/client.tsx'
     ]
   };

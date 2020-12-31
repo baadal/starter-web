@@ -1,4 +1,4 @@
-import 'starter/sticky/polyfills';
+import 'starter/sticky/IMPORT_POLYFILLS';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
