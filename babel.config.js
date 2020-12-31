@@ -13,6 +13,10 @@ module.exports = {
         corejs: { version: 3, proposals: true },
         shippedProposals: true,
         targets: isModern ? { esmodules: true } : {},
+        exclude: [
+          /esnext.map/,
+          /esnext.set/,
+        ],
         // debug: !isProd && !isServer,
       }
     ],
