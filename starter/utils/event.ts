@@ -3,9 +3,12 @@ import path from 'path';
 import store from '../lib/store';
 import { readFile, writeFile, appendToFile, deleteDir } from '../lib/file-io';
 import { AllAssetsMap } from '../core/model/common.model';
+import { checkModern } from './env';
 import logger from './logger';
 
 // const sleep = require('system-sleep');
+
+const isModern = checkModern();
 
 const assetMap: AllAssetsMap = {
   main: '',
@@ -121,7 +124,7 @@ export const appendLog = (content: string) => {
 
 export const done = (isServer: boolean) => {
   displayAssets(isServer);
-  if (!isServer) dumpAssetsMap();
+  if (!isServer && !isModern) dumpAssetsMap();
   syncHelper(isServer);
 };
 
