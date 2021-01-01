@@ -3,6 +3,7 @@ import express from 'express';
 // @ts-ignore
 import cors from 'cors';
 
+import { checkESModulesSupport } from 'src/ssr/utils';
 import { initApiServer, getUserAgentInfo } from 'src/ssr/server-utils';
 import { ServerResponse } from 'src/core/models/response.model';
 
@@ -152,7 +153,9 @@ const getFibonacciNum = (n: string) => {
 
 const userAgentData = (req: express.Request) => {
   const userAgent = req.headers['user-agent'] || '';
-  return getUserAgentInfo(userAgent);
+  const userAgentInfo = getUserAgentInfo(userAgent);
+  const esmSupported = checkESModulesSupport(userAgentInfo);
+  return { ...userAgentInfo, esmSupported };
 };
 
 // ------------------------
