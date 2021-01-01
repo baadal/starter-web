@@ -16,11 +16,12 @@ import EventHooksPlugin from 'event-hooks-webpack-plugin';
 
 import dev from './webpack.dev';
 import prod from './webpack.prod';
-import { checkProd, checkServer } from '../src/utils/env.utils';
+import { checkProd, checkServer, checkModern } from '../src/utils/env.utils';
 import * as event from '../starter/event';
 
 const isProd = checkProd();
 const isServer = checkServer();
+const isModern = checkModern();
 const isAnalyze = (process.env.BUNDLE_ANALYZE === 'true');
 
 const dotEnvFile = `env/.env.${isProd ? 'prod' : 'dev'}`;
@@ -30,10 +31,12 @@ const common: ConfigurationFactory = (env: any) => {
   const buildRoot = 'build';
   const outFolder = isServer ? `${buildRoot}/server` : `${buildRoot}/public`;
 
-  const statsFileName = 'loadable-stats.json';
+  const extJs = isModern ? 'esm.js' : 'js';
+  const dirJs = isModern ? 'js/esm/' : (!isServer ? 'js/' : '');
+  const statsFileName = isModern ? 'loadable-stats.esm.json' : 'loadable-stats.json';
 
-  const outputFileName = (!isServer && isProd) ? '[name].[contenthash:10].js' : '[name].js';
-  const chunkFilename = (!isServer && isProd) ? '[name].[contenthash:10].chunk.js' : '[name].chunk.js';
+  const outputFileName = (!isServer && isProd) ? `[name].[contenthash:10].${extJs}` : `[name].${extJs}`;
+  const chunkFilename = (!isServer && isProd) ? `[name].[contenthash:10].chunk.${extJs}` : `[name].chunk.${extJs}`;
 
   const miniCssFileName = isProd ? 'style.[contenthash:10].css' : 'style.css';
   const miniCssChunkName = isProd ? '[name].[contenthash:10].chunk.css' : '[name].chunk.css';
@@ -62,6 +65,7 @@ const common: ConfigurationFactory = (env: any) => {
       npm_package_version: '',
       NODE_ENV: 'development', // use 'development' unless process.env.NODE_ENV is defined
       PLATFORM: '',
+      MODERN: '',
     }),
     new MiniCssExtractPlugin({
       filename: `css/${miniCssFileName}`,
@@ -74,17 +78,20 @@ const common: ConfigurationFactory = (env: any) => {
       maxChunks: 1
     }));
   } else {
-    plugins.push(new CopyWebpackPlugin({
-      patterns: [
-        { from: 'static' }
-      ]
-    }));
     plugins.push(new LoadablePlugin({
       filename: statsFileName,
       outputAsset: false,
       writeToDisk: {
         filename: path.resolve(process.cwd(), buildRoot),
       }
+    }));
+  }
+
+  if (!isServer && !isModern) {
+    plugins.push(new CopyWebpackPlugin({
+      patterns: [
+        { from: 'static' }
+      ]
     }));
   }
 
@@ -190,8 +197,8 @@ const common: ConfigurationFactory = (env: any) => {
   return ({
     entry,
     output: {
-      filename: outputFileName,
-      chunkFilename: chunkFilename,
+      filename: `${dirJs}${outputFileName}`,
+      chunkFilename: `${dirJs}${chunkFilename}`,
       path: path.resolve(process.cwd(), outFolder),
       publicPath: (process.env.ASSETS_BASE_URL || '') + '/',
     },
@@ -233,7 +240,7 @@ const common: ConfigurationFactory = (env: any) => {
               loader: 'file-loader',
               options: {
                 name: `images/${assetName}`,
-                emitFile: !isServer,
+                emitFile: !isServer && !isModern,
               },
             },
           ],
@@ -245,7 +252,7 @@ const common: ConfigurationFactory = (env: any) => {
               loader: 'file-loader',
               options: {
                 name: `fonts/${assetName}`,
-                emitFile: !isServer,
+                emitFile: !isServer && !isModern,
               }
             },
           ],
