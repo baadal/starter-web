@@ -4,6 +4,7 @@ import express from 'express';
 // @ts-ignore
 import cors from 'cors';
 
+import { getUserAgentInfo } from 'src/ssr/server-utils';
 import { ServerResponse } from 'src/core/models/response.model';
 
 const app = express();
@@ -154,6 +155,13 @@ const getFibonacciNum = (n: string) => {
 
 // ------------------------
 
+const userAgentData = (req: express.Request) => {
+  const userAgent = req.headers['user-agent'] || '';
+  return getUserAgentInfo(userAgent);
+};
+
+// ------------------------
+
 const sendResponse = (req: express.Request, res: express.Response, data: any) => {
   const response: ServerResponse = { status: 'ok', data };
   res.type('json');
@@ -171,6 +179,8 @@ app.get('/v1/data/not-found', (req, res) => sendResponse(req, res, notFoundInfo)
 
 app.get('/v1/data/header', (req, res) => sendResponse(req, res, headerInfo));
 app.get('/v1/data/footer', (req, res) => sendResponse(req, res, footerInfo(req)));
+
+app.get('/v1/info/user-agent', (req, res) => sendResponse(req, res, userAgentData(req)));
 
 app.get('/', (req, res) => sendResponse(req, res, defaultInfo));
 app.get('/favicon.ico', (req, res) => {
