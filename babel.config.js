@@ -1,5 +1,6 @@
-// const envUtils = require('./src/utils/env.utils');
+const envUtils = require('./src/utils/env.utils');
 
+const isModern = envUtils.checkModern();
 // const isProd = envUtils.checkProd();
 // const isServer = envUtils.checkServer();
 
@@ -11,6 +12,7 @@ module.exports = {
         useBuiltIns: "usage",
         corejs: { version: 3, proposals: true },
         shippedProposals: true,
+        targets: isModern ? { esmodules: true } : {},
         // debug: !isProd && !isServer,
       }
     ],
