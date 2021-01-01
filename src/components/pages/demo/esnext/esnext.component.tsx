@@ -76,10 +76,17 @@ class EsnextDemo extends React.Component<EsnextDemoProps, EsnextDemoState> {
   };
 
   testFetch = async () => {
-    const resp = await fetch(env.apiBaseUrl);
+    const resp = await fetch(`${env.apiBaseUrl}/v1/info/user-agent`);
     const response = await resp.json();
-    const { info } = response.data;
-    this.setState({ xhr: info });
+    const { browser, esmSupported } = response.data;
+
+    let label = '';
+    if (browser.label && browser.label.toLowerCase() !== browser.name.toLowerCase()) {
+      label = `${browser.label}/`;
+    }
+
+    const browserInfo = browser ? `${label}${browser.name} ${browser.major}` : '';
+    this.setState({ xhr: browserInfo, esm: esmSupported });
   };
 
   testIntersectionObserver = async () => {
@@ -151,9 +158,22 @@ class EsnextDemo extends React.Component<EsnextDemoProps, EsnextDemoState> {
               <b>
                 <code>fetch</code> API:
               </b>{' '}
+              User-Agent:{' '}
               <code>
                 <Text info={this.state.xhr} text="Loading.." />
               </code>
+              <span>&nbsp;</span>
+              {this.state.esm && (
+                <small>
+                  <code>
+                    <b>esm</b>
+                  </code>
+                </small>
+              )}
+              <span>&nbsp;&nbsp;</span>
+              <small>
+                (<a href={`${env.apiBasePublicUrl}/v1/info/user-agent`}>more..</a>)
+              </small>
             </li>
             <li>
               <b>IntersectionObserver API:</b>{' '}
@@ -180,6 +200,7 @@ export interface EsnextDemoProps {
 
 export interface EsnextDemoState {
   xhr?: string;
+  esm?: boolean;
   collections?: boolean;
   res?: boolean;
   intersection?: boolean;
