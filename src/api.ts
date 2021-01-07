@@ -4,7 +4,7 @@ import express from 'express';
 // @ts-ignore
 import cors from 'cors';
 
-import { getUserAgentInfo } from 'src/ssr/server-utils';
+import { initApiServer, getUserAgentInfo } from 'src/ssr/server-utils';
 import { ServerResponse } from 'src/core/models/response.model';
 
 const app = express();
@@ -194,4 +194,5 @@ app.get('/*', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`\nAPI running at port ${PORT} 🎉\n`);
+  initApiServer();
 });

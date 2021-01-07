@@ -1,7 +1,7 @@
 import serialize from 'serialize-javascript';
 
-import env from 'src/const/env.values';
 import { checkProd } from 'src/utils/env.utils';
+import { getPublicPath } from 'src/ssr/server-utils';
 import { InitialData } from 'src/core/models/response.model';
 
 export const template = (
@@ -12,7 +12,7 @@ export const template = (
   initialData: InitialData | null
 ) => {
   const isProd = checkProd();
-  const publicPath = `${env.assetsBaseUrl || ''}/`;
+  const publicPath = getPublicPath();
 
   const declareInitialData = initialData ? `<script>window.__initialData__ = ${serialize(initialData)}</script>` : '';
 
