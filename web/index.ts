@@ -5,6 +5,7 @@ import XMLHttpRequest from 'xhr2';
 
 import env from 'starter/const/env.values';
 import { checkProd } from 'starter/utils/env';
+import { initWebServer } from 'starter/ssr/server-utils';
 import allRoutes from 'starter/ssr/all-routes';
 
 // support for XMLHttpRequest on node
@@ -42,4 +43,5 @@ allRoutes(app);
 
 app.listen(PORT, () => {
   console.log(`\nApp running at port ${PORT} 😎\n`);
+  initWebServer();
 });
