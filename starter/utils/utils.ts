@@ -4,8 +4,8 @@ import mime from 'mime-types';
 
 import { existsFile, readFile } from 'starter/lib/file-io';
 
-export const getStatsJson = () => {
-  const statsFile = `build/loadable-stats.json`;
+export const getStatsJson = (esm?: boolean) => {
+  const statsFile = `build/loadable-stats${esm ? '.esm' : ''}.json`;
   const statsFilePath = existsFile(path.resolve(process.cwd(), statsFile));
   const stats = readFile(statsFilePath, true) || '{}';
   return JSON.parse(stats);
@@ -18,8 +18,8 @@ export const getAssetsJson = () => {
   return JSON.parse(assets);
 };
 
-export const assertStatsJson = async () => {
-  const statsFile = `build/loadable-stats.json`;
+export const assertStatsJson = async (esm?: boolean) => {
+  const statsFile = `build/loadable-stats${esm ? '.esm' : ''}.json`;
   const statsFilePath = path.resolve(process.cwd(), statsFile);
   for (let i = 0; i < 30; i += 1) {
     if (existsFile(statsFilePath, true)) return;
