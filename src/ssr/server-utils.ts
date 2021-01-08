@@ -2,11 +2,15 @@ import path from 'path';
 import UAParser from 'ua-parser-js';
 
 import { readFile } from 'starter/lib/file-io';
+import { checkProd } from 'src/utils/env.utils';
 import browserMap from 'src/ssr/browser-map';
-import { uaParserMap, assetsDataMap, assetsMimeMap, cjsStatsCache } from 'src/ssr/server-state';
+import { uaParserMap, assetsDataMap, assetsMimeMap, cjsStatsCache, esmStatsCache, cjsToEsmMap } from 'src/ssr/server-state';
 import { assertStatsJson, getStatsJson, getFileMimeType, urlParts } from 'starter/utils';
+import { StringIndexable } from 'src/core/models/common.model';
 import { BrowserInfo, UserAgentInfo } from 'src/core/models/ssr.model';
 import logger from 'starter/logger';
+
+const isProd = checkProd();
 
 const initUaParserMap = () => {
   Object.entries(browserMap).forEach(([key, value]) => {
@@ -23,9 +27,9 @@ const initUaParserMap = () => {
   });
 };
 
-const initStatsCache = () => {
-  const statsCache = cjsStatsCache;
-  const statsJson = getStatsJson();
+const initStatsCache = (esm?: boolean) => {
+  const statsCache = esm ? esmStatsCache : cjsStatsCache;
+  const statsJson = getStatsJson(esm);
 
   const assets =
     statsJson.assets?.map((asset: any) => ({
@@ -37,6 +41,38 @@ const initStatsCache = () => {
 
   statsCache.set('assets', assets);
   statsCache.set('assetsByChunkName', assetsByChunkName);
+};
+
+const filterJsMap = (jsMap: StringIndexable<string | string[]>) => {
+  const jsMapFilter: StringIndexable<string> = {};
+  if (!jsMap) return jsMapFilter;
+
+  Object.entries(jsMap).forEach(([key, value]) => {
+    if (Array.isArray(value)) {
+      value = value.find(file => /\.js$/.test(file)) || '';
+    }
+    jsMapFilter[`${key}`] = value;
+  });
+
+  return jsMapFilter;
+};
+
+const initCjsToEsmMap = () => {
+  if (!cjsStatsCache.size) {
+    logger.error('[initCjsToEsmMap] cjsStatsCache NOT initialized yet!');
+  }
+  if (!esmStatsCache.size) {
+    logger.error('[initCjsToEsmMap] esmStatsCache NOT initialized yet!');
+  }
+
+  const cjsFiles = filterJsMap(cjsStatsCache.get('assetsByChunkName'));
+  const esmFiles = filterJsMap(esmStatsCache.get('assetsByChunkName'));
+
+  Object.keys(cjsFiles).forEach(key => {
+    if (cjsFiles[`${key}`] && !cjsToEsmMap.has(cjsFiles[`${key}`])) {
+      cjsToEsmMap.set('/' + cjsFiles[`${key}`], '/' + esmFiles[`${key}`]);
+    }
+  });
 };
 
 const initAssetsDataMap = () => {
@@ -64,8 +100,8 @@ const cacheMimeType = async (assetName: string) => {
   return false;
 };
 
-const initAssetsMimeMap = async () => {
-  const statsJson = getStatsJson();
+const initAssetsMimeMap = async (esm?: boolean) => {
+  const statsJson = getStatsJson(esm);
   const assets = statsJson.assets || [];
   const assetNames = assets.map((asset: any) => `/${asset.name}`);
 
@@ -81,6 +117,12 @@ export const initWebServer = async () => {
     initStatsCache();
     initAssetsDataMap();
     await initAssetsMimeMap();
+    if (isProd) {
+      await assertStatsJson(true);
+      initStatsCache(true);
+      await initAssetsMimeMap(true);
+      initCjsToEsmMap();
+    }
   } catch (e) {
     logger.warn('~~~~~~~~~~~~~~~~~~~');
     logger.error(e.message);
