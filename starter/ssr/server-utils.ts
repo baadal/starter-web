@@ -15,7 +15,7 @@ import {
 } from 'starter/ssr/server-state';
 import { assertStatsJson, getStatsJson, getAssetsJson, getFileMimeType } from 'starter/utils/utils';
 import { AssetsMap, StringIndexable } from 'starter/core/model/common.model';
-import { BrowserInfo, UserAgentInfo } from 'starter/core/model/ssr.model';
+import { DomElem, BrowserInfo, UserAgentInfo } from 'starter/core/model/ssr.model';
 import logger from 'starter/utils/logger';
 
 const isProd = checkProd();
@@ -274,4 +274,96 @@ export const getMimeType = async (urlPath: string) => {
     logger.error(`[getMimeType] mimeType NOT found for asset: ${urlPath}`);
   }
   return mimeType;
+};
+
+export const injectEsmScripts = (elems: DomElem[], esmSupported: boolean) => {
+  if (!esmSupported) {
+    return elems;
+  }
+  if (!cjsToEsmMap.size) {
+    logger.error('[injectEsmScripts] cjsToEsmMap NOT initialized yet!');
+    return elems;
+  }
+
+  const elemsIn: DomElem[] = [];
+  elems.forEach(el => {
+    if (/\.js$/.test(el.props.src)) {
+      const cjsUrl = el.props.src as string;
+      const parts = publicParts(cjsUrl);
+      if (!parts) {
+        logger.error(`[injectEsmScripts] Unexpected url: ${cjsUrl}`);
+        elemsIn.push(el);
+        return;
+      }
+
+      const { pubPath, urlPath } = parts;
+      const newUrlPath = cjsToEsmMap.get(urlPath);
+      if (!newUrlPath) {
+        logger.error(`[injectEsmScripts] No value in cjsToEsmMap for: ${urlPath}`);
+        elemsIn.push(el);
+        return;
+      }
+
+      const esmEl: DomElem = JSON.parse(JSON.stringify(el));
+      esmEl.props.src = `${pubPath}${newUrlPath}`;
+      esmEl.props = { type: 'module', ...esmEl.props, crossorigin: 'anonymous' };
+      // if (esmEl.props.async) delete esmEl.props.async; // delete async attr
+      elemsIn.push(esmEl);
+
+      const elOrig: DomElem = JSON.parse(JSON.stringify(el));
+      elOrig.props = { nomodule: true, ...elOrig.props }; // nomodule
+      elemsIn.push(elOrig);
+    } else {
+      elemsIn.push(el);
+    }
+  });
+
+  return elemsIn;
+};
+
+export const swapEsmLinks = (elems: DomElem[], esmSupported: boolean) => {
+  if (!esmSupported) {
+    return elems;
+  }
+  if (!cjsToEsmMap.size) {
+    logger.error('[swapEsmLinks] cjsToEsmMap NOT initialized yet!');
+    return elems;
+  }
+
+  const elemsIn: DomElem[] = [];
+  elems.forEach(el => {
+    if (/\.js$/.test(el.props.href)) {
+      const cjsUrl = el.props.href as string;
+      const parts = publicParts(cjsUrl);
+      if (!parts) {
+        logger.error(`[swapEsmLinks] Unexpected url: ${cjsUrl}`);
+        elemsIn.push(el);
+        return;
+      }
+
+      const { pubPath, urlPath } = parts;
+      const newUrlPath = cjsToEsmMap.get(urlPath);
+      if (!newUrlPath) {
+        logger.error(`[swapEsmLinks] No value in cjsToEsmMap for: ${urlPath}`);
+        elemsIn.push(el);
+        return;
+      }
+
+      const esmEl: DomElem = JSON.parse(JSON.stringify(el));
+      esmEl.props.href = `${pubPath}${newUrlPath}`;
+      if (esmEl.props.rel === 'preload' && /\.esm\.js$/.test(esmEl.props.href)) {
+        // Ref: https://developers.google.com/web/updates/2017/12/modulepreload
+        esmEl.props.crossorigin = 'anonymous';
+
+        // Ref: https://developers.google.com/web/updates/2017/12/modulepreload
+        esmEl.props.rel = 'modulepreload';
+      }
+
+      elemsIn.push(esmEl);
+    } else {
+      elemsIn.push(el);
+    }
+  });
+
+  return elemsIn;
 };
