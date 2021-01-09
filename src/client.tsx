@@ -1,7 +1,4 @@
-import 'core-js/es/map'; // For React 16
-import 'core-js/es/set'; // For React 16
-import 'raf/polyfill'; // For React 16
-import 'core-js/es/weak-map'; // For Emotion
+import 'sticky_modules/polyfills';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
