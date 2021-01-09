@@ -7,7 +7,7 @@ import browserMap from 'src/ssr/browser-map';
 import { uaParserMap, assetsDataMap, assetsMimeMap, cjsStatsCache, esmStatsCache, cjsToEsmMap } from 'src/ssr/server-state';
 import { assertStatsJson, getStatsJson, getFileMimeType, urlParts } from 'starter/utils';
 import { StringIndexable } from 'src/core/models/common.model';
-import { BrowserInfo, UserAgentInfo } from 'src/core/models/ssr.model';
+import { DomElem, BrowserInfo, UserAgentInfo } from 'src/core/models/ssr.model';
 import logger from 'starter/logger';
 
 const isProd = checkProd();
@@ -229,4 +229,62 @@ export const getMimeType = (reqUrl: string) => {
     logger.error(`[getMimeType] mimeType NOT found for asset: ${reqUrl}`);
   }
   return mimeType;
+};
+
+export const injectEsmScripts = (elems: DomElem[], esmSupported: boolean) => {
+  if (!esmSupported) {
+    return elems;
+  }
+  if (!cjsToEsmMap.size) {
+    logger.error('[injectEsmScripts] cjsToEsmMap NOT initialized yet!');
+    return elems;
+  }
+
+  const elemsIn: DomElem[] = [];
+  elems.forEach(el => {
+    if (/\.js$/.test(el.props.src)) {
+      const { origin, pathname } = urlParts(el.props.src);
+
+      const elCopy: DomElem = JSON.parse(JSON.stringify(el));
+      elCopy.props.src = `${origin}${cjsToEsmMap.get(pathname)}`;
+      // if (elCopy.props.async) delete elCopy.props.async; // delete async attr
+      elCopy.props = { type: 'module', ...elCopy.props }; // type = "module"
+      elemsIn.push(elCopy);
+
+      const elOrig: DomElem = JSON.parse(JSON.stringify(el));
+      elOrig.props = { nomodule: true, ...elOrig.props }; // nomodule
+      elemsIn.push(elOrig);
+    } else {
+      elemsIn.push(el);
+    }
+  });
+
+  return elemsIn;
+};
+
+export const swapEsmLinks = (elems: DomElem[], esmSupported: boolean) => {
+  if (!esmSupported) {
+    return elems;
+  }
+  if (!cjsToEsmMap.size) {
+    logger.error('[swapEsmLinks] cjsToEsmMap NOT initialized yet!');
+    return elems;
+  }
+
+  const elemsIn: DomElem[] = [];
+  elems.forEach(el => {
+    if (/\.js$/.test(el.props.href)) {
+      const { origin, pathname } = urlParts(el.props.href);
+
+      const esmEl: DomElem = JSON.parse(JSON.stringify(el));
+      esmEl.props.href = `${origin}${cjsToEsmMap.get(pathname)}`;
+      esmEl.props.crossorigin = true;
+
+      elemsIn.push(esmEl);
+    } else {
+      elemsIn.push(el);
+    }
+  });
+
+  return elemsIn;
 };

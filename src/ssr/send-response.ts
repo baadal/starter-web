@@ -3,6 +3,8 @@ import { Observable } from 'rxjs';
 
 import { serverRender } from 'src/server';
 import { InitialData } from 'src/core/models/response.model';
+import { checkESModulesSupport } from './utils';
+import { getUserAgentInfo } from './server-utils';
 import { template } from './template';
 
 const sendServerResponse = (response: string, res: Response, req: Request, contentType = 'text/html') => {
@@ -15,7 +17,11 @@ const sendServerResponse = (response: string, res: Response, req: Request, conte
 };
 
 const serverResponse = (req: Request, res: Response, initialData: InitialData | null) => {
-  const { content, scriptElems, linkElems, styleElems } = serverRender(req.url, initialData);
+  const userAgent = req.headers['user-agent'] || '';
+  const userAgentInfo = getUserAgentInfo(userAgent);
+  const esmSupported = checkESModulesSupport(userAgentInfo);
+
+  const { content, scriptElems, linkElems, styleElems } = serverRender(req.url, initialData, esmSupported);
   const response = template(content, scriptElems, linkElems, styleElems, initialData);
   sendServerResponse(response, res, req);
 };
