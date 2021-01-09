@@ -29,13 +29,15 @@
     "jsx": "react",
     "paths": {
       "src/*": ["src/*"],
-      "starter/*": ["starter/*"]
+      "starter/*": ["starter/*"],
+      "sticky_modules/*": ["sticky_modules/*"]
     }
   },
   "include": [
     "./src/**/*",
     "./typings/**/*.d.ts",
-    "./starter/**/*"
+    "./starter/**/*",
+    "./sticky_modules/**/*"
   ],
   "exclude": [
     "node_modules",

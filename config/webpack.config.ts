@@ -176,6 +176,7 @@ const common = (env: any) => {
       alias: {
         src: path.resolve(process.cwd(), 'src/'),
         starter: path.resolve(process.cwd(), 'starter/'),
+        sticky_modules: path.resolve(process.cwd(), 'sticky_modules/'),
       },
       ...resolve,
     },
