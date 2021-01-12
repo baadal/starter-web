@@ -5,6 +5,7 @@ import CompressionPlugin from 'compression-webpack-plugin';
 
 import { checkServer } from '../src/utils/env.utils';
 import { COMPRESSION_FILES_REGEX } from '../starter/const';
+import { existsFile } from '../starter/lib/file-io';
 
 const prodConfig: ConfigurationFactory = (env: any) => {
   const isServer = checkServer();
@@ -12,6 +13,11 @@ const prodConfig: ConfigurationFactory = (env: any) => {
   const plugins: Plugin[] = [
     new Dotenv({ path: path.resolve(process.cwd(), `env/.env.prod`) }),
   ];
+
+  const deployEnvFile = path.resolve(process.cwd(), `env/.env.deploy`);
+  if (existsFile(deployEnvFile)) {
+    plugins.push(new Dotenv({ path: deployEnvFile }));
+  }
 
   if(!isServer) {
     plugins.push(
