@@ -46,7 +46,14 @@ const userAgentData = (req: express.Request) => {
 // ------------------------
 
 const sendResponse = (req: express.Request, res: express.Response, data: any) => {
-  const response: ServerResponse = { status: 'ok', data };
+  const instanceRegion = process.env.INSTANCE_REGION;
+  const instanceRegionName = process.env.INSTANCE_REGION_NAME;
+
+  let response: ServerResponse = { status: 'ok', data };
+  if (instanceRegion) {
+    response = { ...response, region: `${instanceRegion}, ${instanceRegionName}` };
+  }
+
   res.type('json');
   return res.send(response);
 };
