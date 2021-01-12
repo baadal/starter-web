@@ -3,4 +3,5 @@ export interface ServerResponse<T = any> {
   errorCode?: number;
   errorMsg?: string;
   data: T;
+  region?: string;
 }
