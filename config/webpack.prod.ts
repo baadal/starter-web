@@ -15,7 +15,7 @@ const prodConfig: ConfigurationFactory = (env: any) => {
   ];
 
   const deployEnvFile = path.resolve(process.cwd(), `env/.env.deploy`);
-  if (existsFile(deployEnvFile)) {
+  if (existsFile(deployEnvFile, true)) {
     plugins.push(new Dotenv({ path: deployEnvFile }));
   }
 

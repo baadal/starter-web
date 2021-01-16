@@ -1,8 +1,8 @@
 import serialize from 'serialize-javascript';
 
-import env from 'src/const/env.values';
 import { checkProd } from 'src/utils/env.utils';
 import { getJsAssetName, getAssetsData, getFontList } from 'src/ssr/server-utils';
+import { cjsStatsCache } from 'src/ssr/server-state';
 import { getTagsFromElems } from 'src/ssr/utils';
 import { ScriptElem, LinkElem, StyleElem } from 'src/core/models/ssr.model';
 import { InitialData } from 'src/core/models/response.model';
@@ -15,6 +15,7 @@ export const template = (
   initialData: InitialData | null
 ) => {
   const isProd = checkProd();
+  const publicPath = cjsStatsCache.get('publicPath') || '/';
 
   const declareInitialData = initialData ? `<script>window.__initialData__ = ${serialize(initialData)}</script>` : '';
   const reloadScript = !isProd ? `<script src="/reload/reload.js"></script>` : '';
@@ -34,12 +35,12 @@ export const template = (
   const scriptTags = getTagsFromElems(scriptElems);
 
   if (isProd) {
-    scriptTop = `<script>${getAssetsData(`/${getJsAssetName('scriptTop')}`)}</script>`;
-    scriptBottom = `<script>${getAssetsData(`/${getJsAssetName('scriptBottom')}`)}</script>`;
+    scriptTop = `<script>${getAssetsData(getJsAssetName('scriptTop'))}</script>`;
+    scriptBottom = `<script>${getAssetsData(getJsAssetName('scriptBottom'))}</script>`;
     criticalCss = `<style>${styleElems.map(el => getAssetsData(el.props.href)).join(' ')}</style>`;
     linkTags = getTagsFromElems(linkElems);
     fontLinks = getFontList()
-      .map(f => `<link rel="prefetch" as="font" href="${env.assetsBaseUrl}/${f}" crossorigin>`)
+      .map(f => `<link rel="prefetch" as="font" href="${publicPath}${f}" crossorigin>`)
       .join('\n');
 
     disableReactDevTools = `
@@ -56,7 +57,7 @@ export const template = (
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="${description}">
-    <link rel="shortcut icon" type="image/x-icon" href="${env.assetsBaseUrl}/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="${publicPath}favicon.ico" />
     ${criticalCss}
     ${scriptTop}
     ${linkTags}

@@ -68,7 +68,9 @@ const fetchInstanceInfo = async () => {
   deployEnv += `INSTANCE_AVAIL_ZONE=${availabilityZone}\n`;
   deployEnv += `INSTANCE_REGION=${region}\n`;
   deployEnv += `INSTANCE_REGION_NAME=${regionName}\n`;
+  deployEnv += `INSTANCE_REGION_ALIAS=${regionAlias}\n`;
   deployEnv += `S3_BUCKET_NAME=${s3BucketPrefix}-${regionAlias}\n`;
+  deployEnv += `S3_BUCKET_DEFAULT=${s3BucketPrefix}\n`;
 
   const deployEnvFile = path.resolve(process.cwd(), 'env/.env.deploy');
   writeFile(deployEnvFile, deployEnv);

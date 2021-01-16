@@ -5,12 +5,23 @@ import { readFile } from 'starter/lib/file-io';
 import { checkProd } from 'src/utils/env.utils';
 import browserMap from 'src/ssr/browser-map';
 import { uaParserMap, assetsDataMap, assetsMimeMap, cjsStatsCache, esmStatsCache, cjsToEsmMap } from 'src/ssr/server-state';
-import { assertStatsJson, getStatsJson, getFileMimeType, urlParts } from 'starter/utils';
+import { assertStatsJson, getStatsJson, getFileMimeType } from 'starter/utils';
 import { StringIndexable } from 'src/core/models/common.model';
 import { DomElem, BrowserInfo, UserAgentInfo } from 'src/core/models/ssr.model';
 import logger from 'starter/logger';
 
 const isProd = checkProd();
+
+const publicParts = (url: string) => {
+  const publicPath = cjsStatsCache.get('publicPath') || '/';
+  if (!url?.startsWith(publicPath)) {
+    return null;
+  }
+
+  const pubPath = publicPath;
+  const urlPath = url.substr(publicPath.length);
+  return { pubPath, urlPath };
+};
 
 const initUaParserMap = () => {
   Object.entries(browserMap).forEach(([key, value]) => {
@@ -38,7 +49,9 @@ const initStatsCache = (esm?: boolean) => {
       chunkNames: asset.chunkNames,
     })) || [];
   const assetsByChunkName = statsJson.assetsByChunkName || [];
+  const publicPath = statsJson.publicPath || '/';
 
+  statsCache.set('publicPath', publicPath);
   statsCache.set('assets', assets);
   statsCache.set('assetsByChunkName', assetsByChunkName);
 };
@@ -69,8 +82,9 @@ const initCjsToEsmMap = () => {
   const esmFiles = filterJsMap(esmStatsCache.get('assetsByChunkName'));
 
   Object.keys(cjsFiles).forEach(key => {
-    if (cjsFiles[`${key}`] && !cjsToEsmMap.has(cjsFiles[`${key}`])) {
-      cjsToEsmMap.set('/' + cjsFiles[`${key}`], '/' + esmFiles[`${key}`]);
+    const cjsFile = cjsFiles[`${key}`];
+    if (cjsFile && !cjsToEsmMap.has(cjsFile)) {
+      cjsToEsmMap.set(cjsFile, esmFiles[`${key}`]);
     }
   });
 };
@@ -82,16 +96,16 @@ const initAssetsDataMap = () => {
     .map((asset: any) => asset.name)
     .filter((assetName: string) => /\.css$/.test(assetName));
 
-  const dataAssetList = [...jsAssetList, ...styleAssetList].map(item => `/${item}`);
+  const dataAssetList = [...jsAssetList, ...styleAssetList];
   dataAssetList.forEach((assetName: string) => {
-    const assetFile = path.resolve(process.cwd(), `build/public${assetName}`);
+    const assetFile = path.resolve(process.cwd(), `build/public/${assetName}`);
     const assetData = readFile(assetFile) || '';
     assetsDataMap.set(assetName, assetData);
   });
 };
 
 const cacheMimeType = async (assetName: string) => {
-  const filename = path.resolve(process.cwd(), `build/public${assetName}`);
+  const filename = path.resolve(process.cwd(), `build/public/${assetName}`);
   const mimeType = await getFileMimeType(filename);
   if (mimeType) {
     assetsMimeMap.set(assetName, mimeType);
@@ -103,7 +117,7 @@ const cacheMimeType = async (assetName: string) => {
 const initAssetsMimeMap = async (esm?: boolean) => {
   const statsJson = getStatsJson(esm);
   const assets = statsJson.assets || [];
-  const assetNames = assets.map((asset: any) => `/${asset.name}`);
+  const assetNames = assets.map((asset: any) => asset.name);
 
   const prList: Promise<boolean>[] = [];
   assetNames.forEach((assetName: string) => prList.push(cacheMimeType(assetName)));
@@ -148,12 +162,22 @@ export const getJsAssetName = (chunkName: string) => {
 };
 
 export const getAssetsData = (assetPath: string) => {
-  const { pathname } = urlParts(assetPath);
   if (!assetsDataMap.size) {
     logger.error('[getAssetsData] assetsDataMap NOT initialized yet!');
     return '';
   }
-  return assetsDataMap.get(pathname) || '';
+
+  let urlPath = assetPath;
+  if (assetPath.startsWith('http')) {
+    const parts = publicParts(assetPath);
+    if (!parts) {
+      logger.error(`[getAssetsData] Unexpected url: ${assetPath}`);
+      return '';
+    }
+    urlPath = parts.urlPath;
+  }
+
+  return assetsDataMap.get(urlPath) || '';
 };
 
 export const getFontList = () => {
@@ -214,19 +238,19 @@ export const getUserAgentInfo = (userAgent: string): UserAgentInfo | null => {
   return { browser, osName, isMobile };
 };
 
-export const getMimeType = (reqUrl: string) => {
+export const getMimeType = (urlPath: string) => {
   let mimeType: string | boolean = false;
   if (!assetsMimeMap.size) {
     logger.error('[getMimeType] assetsMimeMap NOT initialized yet!');
     return mimeType;
   }
 
-  if (reqUrl && assetsMimeMap.has(reqUrl)) {
-    mimeType = assetsMimeMap.get(reqUrl) || false;
+  if (urlPath && assetsMimeMap.has(urlPath)) {
+    mimeType = assetsMimeMap.get(urlPath) || false;
   }
 
   if (!mimeType) {
-    logger.error(`[getMimeType] mimeType NOT found for asset: ${reqUrl}`);
+    logger.error(`[getMimeType] mimeType NOT found for asset: ${urlPath}`);
   }
   return mimeType;
 };
@@ -243,13 +267,27 @@ export const injectEsmScripts = (elems: DomElem[], esmSupported: boolean) => {
   const elemsIn: DomElem[] = [];
   elems.forEach(el => {
     if (/\.js$/.test(el.props.src)) {
-      const { origin, pathname } = urlParts(el.props.src);
+      const cjsUrl = el.props.src as string;
+      const parts = publicParts(cjsUrl);
+      if (!parts) {
+        logger.error(`[injectEsmScripts] Unexpected url: ${cjsUrl}`);
+        elemsIn.push(el);
+        return;
+      }
 
-      const elCopy: DomElem = JSON.parse(JSON.stringify(el));
-      elCopy.props.src = `${origin}${cjsToEsmMap.get(pathname)}`;
-      // if (elCopy.props.async) delete elCopy.props.async; // delete async attr
-      elCopy.props = { type: 'module', ...elCopy.props }; // type = "module"
-      elemsIn.push(elCopy);
+      const { pubPath, urlPath } = parts;
+      const newUrlPath = cjsToEsmMap.get(urlPath);
+      if (!newUrlPath) {
+        logger.error(`[injectEsmScripts] No value in cjsToEsmMap for: ${urlPath}`);
+        elemsIn.push(el);
+        return;
+      }
+
+      const esmEl: DomElem = JSON.parse(JSON.stringify(el));
+      esmEl.props.src = `${pubPath}${newUrlPath}`;
+      // if (esmEl.props.async) delete esmEl.props.async; // delete async attr
+      esmEl.props = { type: 'module', ...esmEl.props }; // type = "module"
+      elemsIn.push(esmEl);
 
       const elOrig: DomElem = JSON.parse(JSON.stringify(el));
       elOrig.props = { nomodule: true, ...elOrig.props }; // nomodule
@@ -274,10 +312,24 @@ export const swapEsmLinks = (elems: DomElem[], esmSupported: boolean) => {
   const elemsIn: DomElem[] = [];
   elems.forEach(el => {
     if (/\.js$/.test(el.props.href)) {
-      const { origin, pathname } = urlParts(el.props.href);
+      const cjsUrl = el.props.href as string;
+      const parts = publicParts(cjsUrl);
+      if (!parts) {
+        logger.error(`[swapEsmLinks] Unexpected url: ${cjsUrl}`);
+        elemsIn.push(el);
+        return;
+      }
+
+      const { pubPath, urlPath } = parts;
+      const newUrlPath = cjsToEsmMap.get(urlPath);
+      if (!newUrlPath) {
+        logger.error(`[swapEsmLinks] No value in cjsToEsmMap for: ${urlPath}`);
+        elemsIn.push(el);
+        return;
+      }
 
       const esmEl: DomElem = JSON.parse(JSON.stringify(el));
-      esmEl.props.href = `${origin}${cjsToEsmMap.get(pathname)}`;
+      esmEl.props.href = `${pubPath}${newUrlPath}`;
       esmEl.props.crossorigin = true;
 
       elemsIn.push(esmEl);

@@ -119,7 +119,9 @@ var fetchInstanceInfo = function () { return __awaiter(void 0, void 0, void 0, f
                 deployEnv += "INSTANCE_AVAIL_ZONE=" + availabilityZone + "\n";
                 deployEnv += "INSTANCE_REGION=" + region + "\n";
                 deployEnv += "INSTANCE_REGION_NAME=" + regionName + "\n";
+                deployEnv += "INSTANCE_REGION_ALIAS=" + regionAlias + "\n";
                 deployEnv += "S3_BUCKET_NAME=" + s3BucketPrefix + "-" + regionAlias + "\n";
+                deployEnv += "S3_BUCKET_DEFAULT=" + s3BucketPrefix + "\n";
                 deployEnvFile = path_1.default.resolve(process.cwd(), 'env/.env.deploy');
                 writeFile(deployEnvFile, deployEnv);
                 return [2 /*return*/];

@@ -28,7 +28,7 @@ app.disable('x-powered-by');
 
 // disallow caching of JavaScript/CSS bundles in dev mode
 app.use((req, res, next) => {
-  if (!isProd && req.url.match(/\.(js|css)$/i)) {
+  if (!isProd && req.path.match(/\.(js|css)$/i)) {
     res.setHeader('Cache-Control', 'no-store');
   }
   return next();
@@ -36,7 +36,7 @@ app.use((req, res, next) => {
 
 // enable CORS for js/font files
 app.use((req, res, next) => {
-  if (req.url.match(/\.(js|ttf|woff2?)$/i)) {
+  if (req.path.match(/\.(js|ttf|woff2?)$/i)) {
     res.setHeader('Access-Control-Allow-Origin', '*');
   }
   return next();
@@ -46,12 +46,12 @@ app.use((req, res, next) => {
 if (isProd) {
   app.get(COMPRESSION_FILES_REGEX, (req, res, next) => {
     const acceptEncoding = req.header('accept-encoding') || '';
-    const filename = path.resolve(process.cwd(), `build/public${req.url}`);
-    const mimeType = getMimeType(req.url);
+    const filename = path.resolve(process.cwd(), `build/public${req.path}`);
+    const mimeType = getMimeType(req.path.substr(1));
 
     if (/\bbr\b/.test(acceptEncoding)) {
       if (fs.existsSync(filename + '.br')) {
-        req.url += '.br';
+        req.url = req.path + '.br';
         res.set('Content-Encoding', 'br');
         if (mimeType) res.set('Content-Type', mimeType);
         return next();
@@ -59,7 +59,7 @@ if (isProd) {
     }
     if (/\bgzip\b/.test(acceptEncoding)) {
       if (fs.existsSync(filename + '.gz')) {
-        req.url += '.gz';
+        req.url = req.path + '.gz';
         res.set('Content-Encoding', 'gzip');
         if (mimeType) res.set('Content-Type', mimeType);
         return next();

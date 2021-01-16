@@ -18,6 +18,7 @@ import dev from './webpack.dev';
 import prod from './webpack.prod';
 import { checkProd, checkServer, checkModern } from '../src/utils/env.utils';
 import * as event from '../starter/event';
+import logger from '../starter/logger';
 
 const isProd = checkProd();
 const isServer = checkServer();
@@ -109,6 +110,19 @@ const common: ConfigurationFactory = (env: any) => {
   let devtool: Configuration['devtool'] = false;
   if (!isServer && !isProd) {
     devtool = 'inline-source-map';
+  }
+
+  const assetsBaseUrl = process.env.ASSETS_BASE_URL || '';
+  const regionAlias = process.env.INSTANCE_REGION_ALIAS || '';
+
+  let publicPath = '/';
+  if (assetsBaseUrl) {
+    publicPath = `${assetsBaseUrl}/`;
+    if (regionAlias) {
+      publicPath += `${regionAlias}/`;
+    } else {
+      logger.warn(`Missing regionAlias for server instance. assetsBaseUrl: ${assetsBaseUrl}`);
+    }
   }
 
   const stats = {
@@ -211,7 +225,7 @@ const common: ConfigurationFactory = (env: any) => {
       filename: `${dirJs}${outputFileName}`,
       chunkFilename: `${dirJs}${chunkFilename}`,
       path: path.resolve(process.cwd(), outFolder),
-      publicPath: (process.env.ASSETS_BASE_URL || '') + '/',
+      publicPath,
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.jsx'],

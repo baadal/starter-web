@@ -35,14 +35,3 @@ export const getFileMimeType = async (filename: string) => {
 
   return mimeType;
 };
-
-export const urlParts = (url: string) => {
-  let origin = '';
-  let pathname = url || '';
-  if (url.startsWith('http')) {
-    const urlObj = new URL(url);
-    origin = urlObj.origin || '';
-    pathname = urlObj.pathname || '';
-  }
-  return { origin, pathname };
-};
