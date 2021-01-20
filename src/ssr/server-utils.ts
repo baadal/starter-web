@@ -330,7 +330,7 @@ export const swapEsmLinks = (elems: DomElem[], esmSupported: boolean) => {
 
       const esmEl: DomElem = JSON.parse(JSON.stringify(el));
       esmEl.props.href = `${pubPath}${newUrlPath}`;
-      esmEl.props.crossorigin = true;
+      if (esmEl.props.rel === 'preload') esmEl.props.crossorigin = true;
 
       elemsIn.push(esmEl);
     } else {
