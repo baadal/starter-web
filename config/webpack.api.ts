@@ -4,6 +4,15 @@ import nodeExternals from 'webpack-node-externals';
 import NodemonPlugin from 'nodemon-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
 
+import { existsFile } from '../starter/lib/file-io';
+
+const xplugins = [];
+
+const deployEnvFile = path.resolve(process.cwd(), `env/.env.deploy`);
+if (existsFile(deployEnvFile, true)) {
+  xplugins.push(new Dotenv({ path: deployEnvFile }));
+}
+
 const config: webpack.Configuration = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: {
@@ -39,6 +48,7 @@ const config: webpack.Configuration = {
       NODE_ENV: 'development', // use 'development' unless process.env.NODE_ENV is defined
       PLATFORM: ''
     }),
+    ...xplugins,
   ],
   watchOptions: {
     ignored: /node_modules/

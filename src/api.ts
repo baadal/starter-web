@@ -86,6 +86,10 @@ const defaultInfo = {
   info: 'starter api endpoint',
 };
 
+const defaultError = {
+  info: 'invalid api endpoint',
+};
+
 const headerInfo = {
   links: [
     {
@@ -163,7 +167,13 @@ const userAgentData = (req: express.Request) => {
 // ------------------------
 
 const sendResponse = (req: express.Request, res: express.Response, data: any) => {
-  const response: ServerResponse = { status: 'ok', data };
+  const instanceRegion = process.env.INSTANCE_REGION;
+  const instanceRegionName = process.env.INSTANCE_REGION_NAME;
+  const region = instanceRegion ? `${instanceRegion}, ${instanceRegionName}` : '';
+
+  let response: ServerResponse = { status: 'ok', data };
+  if (region) response = { ...response, region };
+
   res.type('json');
   return res.send(response);
 };
@@ -182,7 +192,14 @@ app.get('/v1/data/footer', (req, res) => sendResponse(req, res, footerInfo(req))
 
 app.get('/v1/info/user-agent', (req, res) => sendResponse(req, res, userAgentData(req)));
 
-app.get('/*', (req, res) => sendResponse(req, res, defaultInfo));
+app.get('/*', (req, res) => {
+  if (req.path === '/') {
+    sendResponse(req, res, defaultInfo);
+  } else {
+    res.status(404);
+    sendResponse(req, res, defaultError);
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`\nAPI running at port ${PORT} 🎉\n`);
