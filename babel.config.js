@@ -14,7 +14,12 @@ module.exports = {
         // debug: !isProd && !isServer,
       }
     ],
-    "@babel/preset-react",
+    [
+      "@babel/preset-react",
+      {
+        runtime: "automatic",
+      }
+    ],
     "@babel/preset-typescript",
     "@emotion/babel-preset-css-prop"
   ],
