@@ -26,7 +26,7 @@
     "strictFunctionTypes": true,
     "forceConsistentCasingInFileNames": true,
     "removeComments": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "paths": {
       "src/*": ["src/*"],
       "starter/*": ["starter/*"],
