@@ -1,3 +1,4 @@
+import React from 'react';
 import { AboutPageData } from 'src/core/models/response.model';
 
 import image from 'src/assets/images/logo.png';

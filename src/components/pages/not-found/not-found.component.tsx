@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { NotFoundPageData } from 'src/core/models/response.model';
