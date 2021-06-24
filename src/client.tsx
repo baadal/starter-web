@@ -1,5 +1,6 @@
 import 'sticky_modules/polyfills';
 
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 

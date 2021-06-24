@@ -17,7 +17,7 @@ module.exports = {
     [
       "@babel/preset-react",
       {
-        runtime: "automatic",
+        runtime: "classic",
       }
     ],
     "@babel/preset-typescript",
