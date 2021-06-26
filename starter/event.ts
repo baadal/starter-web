@@ -58,6 +58,16 @@ const displayAssets = (isServer: boolean) => {
   });
 };
 
+const dumpAssetsMap = () => {
+  const assetMapPath = path.resolve(process.cwd(), `build/assets-map.json`);
+  const assetsMap = {
+    images: assetMap.images,
+    fonts: assetMap.fonts,
+  };
+  const assetMapData = JSON.stringify(assetsMap, null, 2);
+  writeFile(assetMapPath, assetMapData);
+};
+
 export const make = (isServer: boolean) => {
   const files = ['client', 'server', 'done'];
 
@@ -110,6 +120,7 @@ export const appendLog = (content: string) => {
 
 export const done = (isServer: boolean) => {
   displayAssets(isServer);
+  if (!isServer) dumpAssetsMap();
   syncHelper(isServer);
 };
 
