@@ -33,4 +33,6 @@ export interface AllAssetsMap {
 
 export interface AssetsMap {
   common: string[];
+  images: string[];
+  fonts: string[];
 }

@@ -11,6 +11,13 @@ export const getStatsJson = () => {
   return JSON.parse(stats);
 };
 
+export const getAssetsJson = () => {
+  const assetsFile = `build/assets-map.json`;
+  const assetsFilePath = existsFile(path.resolve(process.cwd(), assetsFile));
+  const assets = readFile(assetsFilePath, true) || '{}';
+  return JSON.parse(assets);
+};
+
 export const assertStatsJson = async () => {
   const statsFile = `build/loadable-stats.json`;
   const statsFilePath = path.resolve(process.cwd(), statsFile);

@@ -4,7 +4,7 @@ import UAParser from 'ua-parser-js';
 import { readFile } from 'starter/lib/file-io';
 import browserMap from 'starter/ssr/browser-map';
 import { uaParserMap, assetsDataMap, assetsMimeMap, cjsStatsCache, etcStatsCache } from 'starter/ssr/server-state';
-import { assertStatsJson, getStatsJson, getFileMimeType } from 'starter/utils/utils';
+import { assertStatsJson, getStatsJson, getAssetsJson, getFileMimeType } from 'starter/utils/utils';
 import { AssetsMap } from 'starter/core/model/common.model';
 import { BrowserInfo, UserAgentInfo } from 'starter/core/model/ssr.model';
 import logger from 'starter/utils/logger';
@@ -42,6 +42,7 @@ const initUaParserMap = () => {
 const initStatsCache = () => {
   const statsCache = cjsStatsCache;
   const statsJson = getStatsJson();
+  const assetsJson = getAssetsJson();
 
   const assetsByChunkName = statsJson.assetsByChunkName || {};
   statsCache.set('assetsByChunkName', assetsByChunkName);
@@ -51,6 +52,8 @@ const initStatsCache = () => {
 
   const assetsMap: AssetsMap = {
     common: ['scriptTop.js', 'scriptBottom.js'],
+    images: assetsJson.images || [],
+    fonts: assetsJson.fonts || [],
   };
   etcStatsCache.set('assetsMap', assetsMap);
 };
@@ -95,7 +98,8 @@ const initAssetsMimeMap = async () => {
   const statsJson = getStatsJson();
   const assets = Object.values(statsJson.assetsByChunkName || {}).flat();
 
-  const assetNames = [...assets] as string[];
+  const assetsJson = getAssetsJson();
+  const assetNames = [...assets, ...assetsJson.images, ...assetsJson.fonts] as string[];
 
   const prList: Promise<string>[] = [];
   assetNames.forEach(assetName => prList.push(cacheMimeType(assetName)));
