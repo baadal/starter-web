@@ -8,6 +8,8 @@
     "blame": "git log -S",
     "hist": "git log --oneline | grep -i",
     "follow": "git log --follow",
+    "ncu": "ncu",
+    "ncuu": "ncu -u",
     "check-env": "node -e 'console.log(process.env)' | grep npm"
   },
   "repository": {
@@ -15,5 +17,8 @@
     "url": "git+https://github.com/baadal/starter-web.git"
   },
   "author": "Abhishek Raj <abhi@raj.me>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "npm-check-updates": "^11.7.1"
+  }
 }
