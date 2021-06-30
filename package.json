@@ -9,11 +9,16 @@
     "blame": "git log -S",
     "hist": "git log --oneline | grep -i",
     "follow": "git log --follow",
+    "ncu": "ncu",
+    "ncuu": "ncu -u",
     "check-env": "node -e 'console.log(process.env)' | grep npm"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/baadal/starter-app.git"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "npm-check-updates": "^11.7.1"
+  }
 }
