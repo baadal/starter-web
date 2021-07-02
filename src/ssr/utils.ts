@@ -2,7 +2,7 @@ import semver from 'semver';
 import * as lite from 'caniuse-lite';
 
 import { StringIndexable } from 'src/core/models/common.model';
-import { LinkElem, StyleElem, DomElem, UserAgentInfo } from 'src/core/models/ssr.model';
+import { LinkElem, StyleElem, ScriptElem, DomElem, UserAgentInfo } from 'src/core/models/ssr.model';
 import logger from 'starter/utils/logger';
 
 export const getTagsFromElems = (elems: DomElem[]) => {
@@ -57,6 +57,45 @@ export const filterLinkElems = (linkElems: LinkElem[], styleElems: StyleElem[]) 
   });
 
   return linkElemsFilter;
+};
+
+export const inflateLinkElems = (linkElems: LinkElem[], assetList: string[]) => {
+  const unusedScripts: string[] = [];
+  const unusedStyles: string[] = [];
+
+  assetList.forEach(asset => {
+    if (!linkElems.find(linkElem => linkElem.props.href === asset)) {
+      if (/\.js$/.test(asset)) {
+        unusedScripts.push(asset);
+      } else if (/\.css$/.test(asset)) {
+        unusedStyles.push(asset);
+      } else {
+        console.warn('[WARN] Unhandled unused asset:', asset);
+      }
+    }
+  });
+
+  const unusedScriptsLinks: ScriptElem[] = unusedScripts.map(path => ({
+    type: 'link',
+    props: {
+      rel: 'prefetch',
+      as: 'script',
+      href: path,
+    },
+  }));
+
+  const unusedStylesLinks: StyleElem[] = unusedStyles.map(path => ({
+    type: 'link',
+    props: {
+      rel: 'prefetch',
+      as: 'style',
+      href: path,
+    },
+  }));
+
+  const linkElemsInflated: LinkElem[] = [...linkElems, ...unusedScriptsLinks, ...unusedStylesLinks];
+
+  return linkElemsInflated;
 };
 
 const getBrowserSemVer = (browserVersion: string) => {
