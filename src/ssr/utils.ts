@@ -98,6 +98,36 @@ export const inflateLinkElems = (linkElems: LinkElem[], assetList: string[]) => 
   return linkElemsInflated;
 };
 
+export const corsScripts = (elems: ScriptElem[]) => {
+  const newElems: ScriptElem[] = [];
+  elems.forEach(el => {
+    if (/^https?:/.test(el.props.src) && /\.js$/.test(el.props.src)) {
+      newElems.push({
+        type: el.type,
+        props: { ...el.props, crossorigin: 'anonymous' },
+      });
+    } else {
+      newElems.push(el);
+    }
+  });
+  return newElems;
+};
+
+export const corsLinks = (elems: LinkElem[]) => {
+  const newElems: LinkElem[] = [];
+  elems.forEach(el => {
+    if (/^https?:/.test(el.props.href) && /\.js$/.test(el.props.href)) {
+      newElems.push({
+        type: el.type,
+        props: { ...el.props, crossorigin: 'anonymous' },
+      });
+    } else {
+      newElems.push(el);
+    }
+  });
+  return newElems;
+};
+
 const getBrowserSemVer = (browserVersion: string) => {
   if (!browserVersion) return '';
 
