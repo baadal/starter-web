@@ -55,8 +55,19 @@ const initStatsCache = () => {
   etcStatsCache.set('assetsMap', assetsMap);
 };
 
-const initAssetsDataMap = () => {
+const getAssetNames = () => {
   const assetList = Object.values(cjsStatsCache.get('assetsByChunkName') || {}).flat() as string[];
+  return assetList;
+};
+
+export const getAssetList = () => {
+  const assetList = getAssetNames();
+  const publicPath = cjsStatsCache.get('publicPath');
+  return assetList.map(asset => `${publicPath}${asset}`);
+};
+
+const initAssetsDataMap = () => {
+  const assetList = getAssetNames();
   const styleAssetList = assetList.filter(assetName => /\.css$/.test(assetName));
 
   const assetsMap: AssetsMap = etcStatsCache.get('assetsMap') || {};
