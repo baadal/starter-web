@@ -7,15 +7,18 @@ export const routesData: RouteData[] = [
   {
     path: routes.about.path,
     component: require('src/components/pages/about/about.component').default,
+    source: routes.about.source,
   },
   {
     path: routes.home.path,
     component: require('src/components/pages/home/home.component').default,
+    source: routes.home.source,
   },
   {
     name: routes.default.name,
     path: routes.default.path,
     component: require('src/components/pages/not-found/not-found.component').default,
+    source: routes.default.source,
   },
 ];
 
