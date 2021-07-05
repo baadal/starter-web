@@ -34,6 +34,7 @@
       "routes/*": ["web/routes/*"],
       "components/*": ["web/components/*"],
       "model/*": ["web/model/*"],
+      "utils/*": ["web/utils/*"],
       "assets/*": ["web/assets/*"],
       "starter/*": ["starter/*"]
     }

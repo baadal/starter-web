@@ -193,6 +193,7 @@ const common = (env: any) => {
         routes: path.resolve(process.cwd(), 'web/routes/'),
         components: path.resolve(process.cwd(), 'web/components/'),
         model: path.resolve(process.cwd(), 'web/model/'),
+        utils: path.resolve(process.cwd(), 'web/utils/'),
         assets: path.resolve(process.cwd(), 'web/assets/'),
         starter: path.resolve(process.cwd(), 'starter/'),
       },
