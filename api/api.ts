@@ -4,6 +4,7 @@ import express from 'express';
 // @ts-ignore
 import cors from 'cors';
 
+import { checkESModulesSupport } from 'starter/ssr/utils';
 import { initApiServer, getUserAgentInfo } from 'starter/ssr/server-utils';
 import { ServerResponse } from './model/response.model';
 
@@ -35,7 +36,9 @@ const defaultError = {
 
 const userAgentData = (req: express.Request) => {
   const userAgent = req.headers['user-agent'] || '';
-  return getUserAgentInfo(userAgent);
+  const userAgentInfo = getUserAgentInfo(userAgent);
+  const esmSupported = checkESModulesSupport(userAgentInfo);
+  return { ...userAgentInfo, esmSupported };
 };
 
 // ------------------------
