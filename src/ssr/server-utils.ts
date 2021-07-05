@@ -92,11 +92,48 @@ export const initApiServer = () => {
   initUaParserMap();
 };
 
+const getCaniuseName = (uaParseName: string, android?: boolean) => {
+  let label = '';
+  if (!uaParserMap.size) {
+    logger.error('[getCaniuseName] uaParserMap NOT initialized yet!');
+    return label;
+  }
+
+  if (uaParseName) {
+    let uaparseKey = uaParseName.toLowerCase().split(' ').join('-');
+    if (!uaParserMap.has(uaparseKey)) {
+      uaparseKey = android ? `${uaparseKey}:android` : `${uaparseKey}:!android`;
+    }
+    if (uaParserMap.has(uaparseKey)) {
+      const browserMapKey = uaParserMap.get(uaparseKey);
+      const { caniuse } = browserMap[`${browserMapKey}`];
+      label = [caniuse].flat()[0] as string;
+    }
+  }
+
+  if (!label) {
+    logger.warn('[getCaniuseName] Browser label NOT defined!');
+  }
+  return label;
+};
+
 export const getUserAgentInfo = (userAgent: string): UserAgentInfo | null => {
   if (!userAgent) return null;
 
   const parser = new UAParser(userAgent);
-  const browser: BrowserInfo = parser.getBrowser();
 
-  return { browser };
+  let browser: BrowserInfo = parser.getBrowser();
+  const device = parser.getDevice();
+  const os = parser.getOS();
+
+  const osName = os.name || '';
+  const deviceType = device.type?.toLowerCase() || '';
+  const isMobile = deviceType.includes('mobile') || deviceType.includes('tablet');
+  const android = isMobile && osName.toLowerCase() === 'android';
+
+  const browserName = browser?.name || '';
+  const label = getCaniuseName(browserName, android);
+  browser = { ...browser, label };
+
+  return { browser, osName, isMobile };
 };
