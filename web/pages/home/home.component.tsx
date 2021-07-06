@@ -16,31 +16,30 @@ class Home extends React.Component<HomeProps, HomeState> {
     return (
       <>
         <div className={common.textCenter}>
-          <div className={common.heroText}>
-            <span>Starter.js</span>
-            <span className={common.heroSplit}>&nbsp;&nbsp;&bull;&nbsp;&nbsp;</span>
-            <span className={common.heroSubtext}>{title}</span>
-          </div>
-          <p className={common.punchline}>{description}</p>
+          <div className={common.heroText}>{title}</div>
         </div>
-        <div className={common.pageDesc}>
-          <p>
-            Please visit{' '}
-            <a href="https://starterjs.dev/docs" target="_blank" rel="noreferrer">
-              starterjs.dev
-            </a>{' '}
-            for documentation and tutorials. You can explore the project on{' '}
-            <a href="https://github.com/baadal/starter-app" target="_blank" rel="noreferrer">
-              GitHub
-            </a>{' '}
-            and learn more <Link to={routes.about.path}>about</Link> it.
-          </p>
-          <p>
-            <em>Build something awesome!</em>
-            <span>&nbsp;&nbsp;</span>
-            <span className={common.emojiBig}>🚀</span>
-          </p>
-        </div>
+        <p className={common.punchline}>{description}</p>
+        <ul>
+          <li>
+            <Link to={routes.about.path}>About Us</Link>
+          </li>
+          <li>
+            <Link to="/demo/broken-link">Demo: Broken Link</Link>
+          </li>
+        </ul>
+        <p className={common.punchline}>Performance</p>
+        <ul>
+          <li>
+            <a href="https://web.dev/measure/" target="_blank" rel="noreferrer">
+              Lighthouse
+            </a>
+          </li>
+          <li>
+            <a href="https://gtmetrix.com/" target="_blank" rel="noreferrer">
+              GTmetrix
+            </a>
+          </li>
+        </ul>
       </>
     );
   }
