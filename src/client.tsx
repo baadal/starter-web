@@ -14,7 +14,7 @@ loadableReady(() => {
     </BrowserRouter>,
     document.getElementById('root'),
     () => {
-      console.log('React hydration complete!');
+      // console.log('React hydration complete!');
     }
   );
 });

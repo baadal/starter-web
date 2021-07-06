@@ -1,4 +1,4 @@
 const msg = 'Importing modern polyfills..';
-console.log(msg);
+// console.log(msg);
 
 export default msg;
