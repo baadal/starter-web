@@ -1,8 +1,8 @@
 export const homeInfo = {
-  title: 'React Starter Kit',
-  description: 'Start Building!',
+  title: 'My Starter App',
+  description: 'The modern way!',
   seo: {
-    title: 'Starter.js',
+    title: 'Starter.js Demo',
     description: 'A modern way of building Web Apps',
   },
 };
