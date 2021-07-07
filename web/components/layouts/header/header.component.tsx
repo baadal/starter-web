@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import common from 'assets/css/common.module.scss';
 
@@ -10,7 +10,9 @@ const Header = (props: HeaderProps) => {
     <div className={common.header}>
       {headerData?.links?.map((link: any) => (
         <span key={link.path}>
-          <Link to={link.path}>{link.title}</Link>
+          <NavLink to={link.path} exact activeClassName="active">
+            {link.title}
+          </NavLink>
           <span>&nbsp;&nbsp;&nbsp;</span>
         </span>
       ))}
