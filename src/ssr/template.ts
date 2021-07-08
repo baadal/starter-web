@@ -22,7 +22,9 @@ export const template = (
   const description = initialData?.pageData?.seo?.description || defaultDescription;
 
   const topScriptBody = getAssetsData('scriptTop.js');
+  const bottomScriptBody = getAssetsData('scriptBottom.js');
   const scriptTop = topScriptBody ? `<script>${topScriptBody}</script>` : '';
+  const scriptBottom = bottomScriptBody ? `<script>${bottomScriptBody}</script>` : '';
 
   if (!isProd) {
     styleTags = '';
@@ -44,6 +46,7 @@ export const template = (
     <div id="root">${content}</div>
     ${declareInitialData}
     ${scriptTags}
+    ${scriptBottom}
   </body>
 </html>`;
 

@@ -50,7 +50,7 @@ const initStatsCache = () => {
   statsCache.set('publicPath', publicPath);
 
   const assetsMap: AssetsMap = {
-    common: ['scriptTop.js'],
+    common: ['scriptTop.js', 'scriptBottom.js'],
   };
   etcStatsCache.set('assetsMap', assetsMap);
 };
