@@ -27,7 +27,7 @@ const config: Configuration = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
     alias: {
-      src: path.resolve(process.cwd(), 'src/'),
+      app: path.resolve(process.cwd(), 'app/'),
       starter: path.resolve(process.cwd(), 'starter/'),
     },
   },

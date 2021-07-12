@@ -1,4 +1,4 @@
-const envUtils = require('./starter/env');
+const envUtils = require('./starter/utils/env');
 
 const isModern = envUtils.checkModern();
 // const isProd = envUtils.checkProd();

@@ -1,7 +1,7 @@
 import path from 'path';
 
-import { checkModern } from '../env';
-import { AllAssetsMap } from '../../src/core/models/common.model';
+import { checkModern } from './env';
+import { AllAssetsMap } from '../core/model/common.model';
 import { readFile, writeFile, appendToFile, deleteDir } from '../lib/file-io';
 import store from '../lib/store';
 import logger from './logger';

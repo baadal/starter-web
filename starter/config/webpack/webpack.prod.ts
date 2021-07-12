@@ -5,8 +5,8 @@ import Dotenv from 'dotenv-webpack';
 // @ts-ignore
 import CompressionPlugin from 'compression-webpack-plugin';
 
-import { checkServer } from '../../env';
-import { COMPRESSION_FILES_REGEX } from '../../const';
+import { checkServer } from '../../utils/env';
+import { COMPRESSION_FILES_REGEX } from '../../const/values';
 import { existsFile } from '../../lib/file-io';
 
 const prodConfig = (env: any) => {

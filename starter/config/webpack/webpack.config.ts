@@ -18,7 +18,7 @@ import EventHooksPlugin from 'event-hooks-webpack-plugin';
 
 import dev from './webpack.dev';
 import prod from './webpack.prod';
-import { checkProd, checkServer, checkModern } from '../../env';
+import { checkProd, checkServer, checkModern } from '../../utils/env';
 import * as event from '../../utils/event';
 
 const isProd = checkProd();
@@ -98,7 +98,7 @@ const common = (env: any) => {
   if (!isServer && !isModern) {
     plugins.push(new CopyWebpackPlugin({
       patterns: [
-        { from: 'custom/static' }
+        { from: 'app/static' }
       ]
     }));
   }
@@ -205,11 +205,11 @@ const common = (env: any) => {
   ];
 
   const entry: Entry = isServer ? {
-    index: './src/index.ts'
+    index: './app/index.ts'
   } : {
     client: [
       ...(isModern ? modernPolyfills : legacyPolyfills),
-      './src/client.tsx'
+      './app/client.tsx'
     ]
   };
 
@@ -224,7 +224,7 @@ const common = (env: any) => {
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.jsx'],
       alias: {
-        src: path.resolve(process.cwd(), 'src/'),
+        app: path.resolve(process.cwd(), 'app/'),
         starter: path.resolve(process.cwd(), 'starter/'),
       },
       ...resolve,

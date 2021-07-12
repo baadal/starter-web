@@ -28,12 +28,12 @@
     "removeComments": true,
     "jsx": "react",
     "paths": {
-      "src/*": ["src/*"],
+      "app/*": ["app/*"],
       "starter/*": ["starter/*"]
     }
   },
   "include": [
-    "./src/**/*",
+    "./app/**/*",
     "./api/**/*",
     "./starter/**/*",
     "./custom/**/*"

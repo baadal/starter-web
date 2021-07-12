@@ -17,7 +17,7 @@ const config: webpack.Configuration = {
   resolve: {
     extensions: ['.ts', '.js'],
     alias: {
-      src: path.resolve(process.cwd(), 'src/'),
+      app: path.resolve(process.cwd(), 'app/'),
       starter: path.resolve(process.cwd(), 'starter/'),
     },
   },

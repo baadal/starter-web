@@ -5,9 +5,9 @@ import compression from 'compression';
 // @ts-ignore
 import cors from 'cors';
 
-import { checkESModulesSupport } from 'src/ssr/utils';
-import { initApiServer, getUserAgentInfo } from 'src/ssr/server-utils';
-import { ServerResponse } from 'src/core/models/response.model';
+import { checkESModulesSupport } from 'starter/ssr/utils';
+import { initApiServer, getUserAgentInfo } from 'starter/ssr/server-utils';
+import { ServerResponse } from './model/response.model';
 
 import { homeInfo } from './routes/pages/home/home.api';
 import { aboutInfo } from './routes/pages/about/about.api';
@@ -79,7 +79,7 @@ app.get('/v1/info/user-agent', (req, res) => sendResponse(req, res, userAgentDat
 
 app.get('/', (req, res) => sendResponse(req, res, defaultInfo));
 app.get('/favicon.ico', (req, res) => {
-  res.sendFile(path.resolve(process.cwd(), 'static/favicon.ico'));
+  res.sendFile(path.resolve(process.cwd(), 'build/public/favicon.ico'));
 });
 
 app.get('/*', (req, res) => {
