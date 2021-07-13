@@ -59,6 +59,9 @@ const prodConfig = (env: any) => {
       }
     },
     plugins,
+    performance: {
+      hints: false
+    },
   });
 };
 

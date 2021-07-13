@@ -7,7 +7,7 @@
     "webpack": "webpack --config starter/config/webpack/webpack.config.ts",
     "analyze": "cross-env NODE_ENV=production BUNDLE_ANALYZE=true npm run webpack",
     "analyze:modern": "cross-env NODE_ENV=production MODERN=true BUNDLE_ANALYZE=true npm run webpack",
-    "sync": "tsc starter/utils/verify.ts --target es5 --esModuleInterop --resolveJsonModule && mv -t starter/scripts starter/utils/*.js",
+    "sync": "tsc starter/utils/verify.ts --target es5 --esModuleInterop --resolveJsonModule && mv starter/utils/*.js starter/scripts",
     "build:client": "npm run webpack",
     "build:server": "cross-env PLATFORM=server npm run webpack",
     "build:client:modern": "cross-env MODERN=true npm run build:client",
