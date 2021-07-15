@@ -53,6 +53,7 @@ const common = (env: any) => {
     new Dotenv({ path: path.resolve(process.cwd(), `custom/env/.env`) }),
     new webpack.EnvironmentPlugin({
       npm_package_version: '',
+      BUILD_TIME: '',
       NODE_ENV: 'development', // use 'development' unless process.env.NODE_ENV is defined
       PLATFORM: '',
     }),

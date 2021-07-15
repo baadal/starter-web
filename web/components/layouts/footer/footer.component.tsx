@@ -1,4 +1,5 @@
 import React from 'react';
+import prettyMilliseconds from 'pretty-ms';
 
 import common from 'assets/css/common.module.scss';
 
@@ -7,6 +8,10 @@ const Footer = (props: FooterProps) => {
   const link = footerData?.externalLinks?.[0];
 
   if (!link) return null;
+
+  const buildTime = JSON.parse(process.env.BUILD_TIME || '0') * 1000;
+  let elapsed = buildTime > 0 ? prettyMilliseconds(Date.now() - buildTime, { compact: true }) : '';
+  if (elapsed) elapsed += ' ago';
 
   return (
     <div className={common.footer}>
@@ -18,6 +23,12 @@ const Footer = (props: FooterProps) => {
         </a>{' '}
         <small>
           (<code>v{process.env.npm_package_version}</code>)
+        </small>
+      </span>
+      <br />
+      <span>
+        <small>
+          Last build: <span className={common.textOlive}>{elapsed}</span>
         </small>
       </span>
     </div>
